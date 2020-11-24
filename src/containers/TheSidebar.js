@@ -29,7 +29,7 @@ const TheSidebar = () => {
       onShowChange={(val) => dispatch({type: 'set', sidebarShow: val })}
     >
       <CSidebarBrand className="d-md-down-none" to="/">
-
+        <h4>Upperinc</h4>
       </CSidebarBrand>
       <CSidebarNav>
 
@@ -42,24 +42,6 @@ const TheSidebar = () => {
             CSidebarNavTitle
           }}
         />
-
-        <CSidebarNavDivider />
-        <CSidebarNavTitle>System Utilization</CSidebarNavTitle>
-        <CNavItem className="px-3 d-compact-none c-d-minimized-none">
-          <div className="text-uppercase mb-1"><small><b>CPU Usage</b></small></div>
-          <CProgress size="xs" value={25} color="info" />
-          <small className="text-muted">348 Processes. 1/4 Cores.</small>
-        </CNavItem>
-        <CNavItem className="px-3 d-compact-none c-d-minimized-none">
-          <div className="text-uppercase mb-1"><small><b>Memory Usage</b></small></div>
-          <CProgress size="xs" value={70} color="warning" />
-          <small className="text-muted">11444GB/16384MB</small>
-        </CNavItem>
-        <CNavItem className="px-3 mb-3 d-compact-none c-d-minimized-none">
-          <div className="text-uppercase mb-1"><small><b>SSD 1 Usage</b></small></div>
-          <CProgress size="xs" value={95} color="danger" />
-          <small className="text-muted">243GB/256GB</small>
-        </CNavItem>
       </CSidebarNav>
       <CSidebarMinimizer className="c-d-md-down-none"/>
     </CSidebar>

@@ -8,7 +8,7 @@ const Invoice = React.lazy(() => import('./views/apps/invoicing/Invoice'));
 const AdvancedForms = React.lazy(() => import('./views/forms/advanced-forms/AdvancedForms'));
 const BasicForms = React.lazy(() => import('./views/forms/basic-forms/BasicForms'));
 const ValidationForms = React.lazy(() => import('./views/forms/validation-forms/ValidationForms'));
-const GoogleMaps = React.lazy(() => import('./views/google-maps/GoogleMaps'));
+const RoutePlanner = React.lazy(() => import('./views/route-planner/RoutePlanner'));
 const Toaster = React.lazy(() => import('./views/notifications/toaster/Toaster'));
 const Calendar = React.lazy(() => import('./views/plugins/calendar/Calendar'));
 const Draggable = React.lazy(() => import('./views/plugins/draggable/Draggable'));
@@ -53,7 +53,7 @@ const User = React.lazy(() => import('./views/users/User'));
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
-  { path: '/dashboard', name: 'Dashboard', component: Dashboard },
+  // { path: '/dashboard', name: 'Dashboard', component: Dashboard },
   { path: '/theme', name: 'Theme', component: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', component: Colors },
   { path: '/theme/typography', name: 'Typography', component: Typography },
@@ -85,7 +85,7 @@ const routes = [
   { path: '/forms/advanced-forms', name: 'Advanced Forms', component: AdvancedForms },
   { path: '/forms/basic-forms', name: 'Basic Forms', component: BasicForms },
   { path: '/forms/validation-forms', name: 'Form Validation', component: ValidationForms },
-  { path: '/google-maps', name: 'Google Maps', component: GoogleMaps },
+  { path: '/planner', name: 'Planner', component: RoutePlanner },
   { path: '/icons', exact: true, name: 'Icons', component: CoreUIIcons },
   { path: '/icons/coreui-icons', name: 'CoreUI Icons', component: CoreUIIcons },
   { path: '/icons/flags', name: 'Flags', component: Flags },
