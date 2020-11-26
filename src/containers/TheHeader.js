@@ -68,7 +68,7 @@ const TheHeader = () => {
 
         <CHeaderNav className="d-md-down-none mr-auto">
           <CHeaderNavItem className="px-3">
-            <CHeaderNavLink to="/planner">Planner</CHeaderNavLink>
+            <CHeaderNavLink to="/import-address">Planner</CHeaderNavLink>
           </CHeaderNavItem>
           <CHeaderNavItem className="px-3">
             <CHeaderNavLink to="/users">Users</CHeaderNavLink>
@@ -141,7 +141,9 @@ const TheHeader = () => {
           </div>
         </CSubheader>
       </CHeader>
-      <BaseModal open={open} onClose={() => setOpen(false)}>test</BaseModal>
+      <BaseModal open={open} onClose={() => setOpen(false)}>
+        test
+      </BaseModal>
     </>
   );
 };

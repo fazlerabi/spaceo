@@ -11,21 +11,15 @@ import {
 
 import { Formik } from "formik";
 import * as Yup from "yup";
+import { FaLongArrowAltDown } from "react-icons/fa";
+import "./address-form.scss";
 
 const validationSchema = function (values) {
   return Yup.object().shape({
-    title: Yup.string()
-      .min(2, `Title has to be at least 2 characters`)
-      .required("Title is required"),
-    address: Yup.string()
-      .min(1, `Address has to be at least 1 character`)
-      .required("Address is required"),
-    serviceTime: Yup.string()
-      .min(1, `Service Time has to be at least 1 character`)
-      .required("Service Time is required"),
-    orderSize: Yup.string()
-      .min(1, `Order Size has to be at least 1 character`)
-      .required("Order Size is required"),
+    title: Yup.string().required("Required"),
+    address: Yup.string().required("Required"),
+    serviceTime: Yup.string().required("Required"),
+    orderSize: Yup.string().required("Required"),
   });
 };
 
@@ -80,7 +74,8 @@ const validateForm = (errors) => {
   });
 };
 
-const AddressForm = () => {
+const AddressForm = (props) => {
+  const { withLabel, index } = props;
   return (
     <Formik
       initialValues={initialValues}
@@ -99,16 +94,21 @@ const AddressForm = () => {
       }) => (
         <CForm onSubmit={handleSubmit} noValidate name="simpleForm">
           <CRow>
-            <CCol lg="4">
+            <CCol xs="1" className="px-1">
+              <div className={index === 0 ? "home-label" : "stop-label"}>
+                <span>{index === 0 ? "H" : index}</span>
+                <FaLongArrowAltDown className="down-arrow" />
+              </div>
+            </CCol>
+            <CCol xs="2" className="px-1">
               <CFormGroup className="mb-2">
-                <CLabel htmlFor="title">Title</CLabel>
+                {withLabel && <CLabel htmlFor="title">Title</CLabel>}
                 <CInput
                   type="text"
                   name="title"
                   id="title"
                   placeholder="Title"
                   autoComplete="title"
-                  valid={!errors.title}
                   invalid={touched.title && !!errors.title}
                   autoFocus={true}
                   required
@@ -119,16 +119,15 @@ const AddressForm = () => {
                 <CInvalidFeedback>{errors.title}</CInvalidFeedback>
               </CFormGroup>
             </CCol>
-            <CCol lg="4">
+            <CCol xs="4" className="px-1">
               <CFormGroup className="mb-2">
-                <CLabel htmlFor="address">Address</CLabel>
+                {withLabel && <CLabel htmlFor="address">Address</CLabel>}
                 <CInput
                   type="text"
                   name="address"
                   id="address"
                   placeholder="Address"
                   autoComplete="address"
-                  valid={!errors.address}
                   invalid={touched.address && !!errors.address}
                   required
                   onChange={handleChange}
@@ -138,16 +137,17 @@ const AddressForm = () => {
                 <CInvalidFeedback>{errors.address}</CInvalidFeedback>
               </CFormGroup>
             </CCol>
-            <CCol lg="2">
+            <CCol xs="3" className="px-1">
               <CFormGroup className="mb-2">
-                <CLabel htmlFor="serviceTime">Service Time</CLabel>
+                {withLabel && (
+                  <CLabel htmlFor="serviceTime">Service Time</CLabel>
+                )}
                 <CInput
                   type="text"
                   name="serviceTime"
                   id="serviceTime"
                   placeholder="Service Time"
                   autoComplete="serviceTime"
-                  valid={!errors.serviceTime}
                   invalid={touched.serviceTime && !!errors.serviceTime}
                   required
                   onChange={handleChange}
@@ -157,16 +157,15 @@ const AddressForm = () => {
                 <CInvalidFeedback>{errors.serviceTime}</CInvalidFeedback>
               </CFormGroup>
             </CCol>
-            <CCol lg="2">
+            <CCol xs="2" className="px-1">
               <CFormGroup className="mb-2">
-                <CLabel htmlFor="orderSize">Order Size</CLabel>
+                {withLabel && <CLabel htmlFor="orderSize">Order Size</CLabel>}
                 <CInput
                   type="text"
                   name="orderSize"
                   id="orderSize"
-                  placeholder="Order Size"
+                  placeHolder="Size"
                   autoComplete="orderSize"
-                  valid={!errors.orderSize}
                   invalid={touched.orderSize && !!errors.orderSize}
                   required
                   onChange={handleChange}
