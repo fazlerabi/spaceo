@@ -10,7 +10,7 @@ function DomUtility(props) {
   };
 
   React.useEffect(() => {
-    setState(window.innerWidget >= 992);
+    setState(window.innerWidth >= 992);
     window.addEventListener("resize", handleWindowResize);
     return () => window.removeEventListener("resize", handleWindowResize);
   }, []);
