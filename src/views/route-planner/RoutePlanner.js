@@ -15,6 +15,7 @@ import {
   CRow,
   CCol,
 } from "@coreui/react";
+import { useSelector } from "react-redux";
 import { withScriptjs, withGoogleMap, GoogleMap } from "react-google-maps";
 import { FaPlus, FaAddressBook, FaRoute } from "react-icons/fa";
 import AddressForm from "../forms/address-form";
@@ -131,41 +132,69 @@ function MapComponent() {
 }
 
 const ReactGoogleMaps = () => {
+  const isDesktop = useSelector((state) => state.isDesktop);
   const [layoutManager, setLayoutManager] = useState(null);
+
+  const mobileLayout = {
+    content: [
+      {
+        type: "stack",
+        content: [
+          {
+            component: Configuration,
+            title: "Planner",
+            isClosable: false,
+          },
+          {
+            component: MapComponent,
+            title: "Route",
+            isClosable: false,
+          },
+        ],
+      },
+    ],
+    settings: {
+      showPopoutIcon: false,
+      showMaximiseIcon: false,
+      showCloseIcon: false,
+    },
+  };
+
+  const layout = {
+    content: [
+      {
+        type: "row",
+        content: [
+          {
+            component: Configuration,
+            title: "Planner",
+            isClosable: false,
+          },
+          {
+            type: "column",
+            content: [
+              {
+                component: MapComponent,
+                title: "Route",
+                isClosable: false,
+              },
+            ],
+          },
+        ],
+      },
+    ],
+    settings: {
+      showPopoutIcon: false,
+      showMaximiseIcon: false,
+      showCloseIcon: false,
+    },
+  };
 
   return (
     <>
       <div className="route-planner-layout">
         <GoldenLayoutComponent
-          config={{
-            content: [
-              {
-                type: "row",
-                content: [
-                  {
-                    component: Configuration,
-                    title: "Planner",
-                    isClosable: false,
-                  },
-                  {
-                    type: "column",
-                    content: [
-                      {
-                        component: MapComponent,
-                        title: "Route",
-                        isClosable: false,
-                      },
-                    ],
-                  },
-                ],
-              },
-            ],
-            settings: {
-              showPopoutIcon: false,
-              showMaximiseIcon: false,
-              showCloseIcon: false,
-            },
-          }}
+          config={isDesktop ? layout : mobileLayout}
           autoresize={true}
           debounceResize={10}
           onLayoutReady={setLayoutManager}

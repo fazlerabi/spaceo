@@ -89,7 +89,7 @@ const AddressForm = (props) => {
             </CCol>
             <CCol xs="2" className="px-1">
               <CFormGroup className="mb-2">
-                {withLabel && <CLabel htmlFor="title">Title (Optional)</CLabel>}
+                {withLabel && <CLabel htmlFor="title">Title</CLabel>}
                 <CInput
                   type="text"
                   name="title"

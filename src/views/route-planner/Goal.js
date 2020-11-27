@@ -3,25 +3,26 @@ import {
   CButton,
   CCard,
   CCardBody,
-  CCardFooter,
   CCardHeader,
   CCol,
   CCollapse,
   CRow,
   CForm,
   CFormGroup,
-  CInput,
-  CFormText,
+  CBadge,
+  CLabel,
+  CInputRadio,
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
+import { BsDash } from "react-icons/bs";
 import "./Goal.scss";
 
 function Goal(props) {
-  const [accordion, setAccordion] = useState(1);
+  const [accordion, setAccordion] = useState(0);
 
   return (
-    <CRow className="goal">
-      <CCol xl="12" style={{ minHeight: 800 }}>
+    <CRow className="goal h-100">
+      <CCol xl="12">
         <div id="accordion">
           <CCard className="mb-0">
             <CCardHeader id="headingOne">
@@ -39,75 +40,33 @@ function Goal(props) {
                 <CForm action="" method="post" className="form-horizontal">
                   <CFormGroup row>
                     <CCol xs="12" md="12">
-                      <CInput
-                        type="email"
-                        id="hf-email"
-                        name="hf-email"
-                        placeholder="Please enter your departure time"
-                        autoComplete="email"
-                      />
-                      <CFormText className="help-block">
-                        Set your preferred time to start your route (24h value,
-                        e.g. 13:30)
-                      </CFormText>
+                      <h6>
+                        <BsDash />
+                        &nbsp;Departure time is&nbsp;
+                        <CBadge color="secondary">9:00</CBadge>
+                      </h6>
                     </CCol>
                   </CFormGroup>
                   <CFormGroup row>
                     <CCol xs="12" md="12">
-                      <CInput
-                        type="password"
-                        id="hf-password"
-                        name="hf-password"
-                        placeholder="Please enter your service time"
-                        autoComplete="current-password"
-                      />
-                      <CFormText className="help-block">
-                        Set the time you need to spend at each stop (in minutes)
-                      </CFormText>
+                      <h6>
+                        <BsDash />
+                        &nbsp;Service time is&nbsp;
+                        <CBadge color="secondary">0 minutes</CBadge>
+                      </h6>
                     </CCol>
                   </CFormGroup>
                   <CFormGroup row>
                     <CCol xs="12" md="12">
-                      <div className="d-flex lunch-break">
-                        <span>Between&nbsp;</span>
-                        <CInput
-                          type="password"
-                          id="hf-password"
-                          name="hf-password"
-                          autoComplete="current-password"
-                        />
-                        <span>&nbsp;and&nbsp;</span>
-                        <CInput
-                          type="password"
-                          id="hf-password"
-                          name="hf-password"
-                          autoComplete="current-password"
-                        />
-                        <span>&nbsp;for&nbsp;</span>
-                        <CInput
-                          type="password"
-                          id="hf-password"
-                          name="hf-password"
-                          autoComplete="current-password"
-                        />
-                        <span>&nbsp;minutes</span>
-                      </div>
-
-                      <CFormText className="help-block">
-                        Set the time frame and duration for your lunch break
-                      </CFormText>
+                      <h6>
+                        <BsDash />
+                        &nbsp;Lunch break is&nbsp;
+                        <CBadge color="secondary">Not set</CBadge>
+                      </h6>
                     </CCol>
                   </CFormGroup>
                 </CForm>
               </CCardBody>
-              <CCardFooter>
-                <CButton type="submit" size="sm" color="primary">
-                  <CIcon name="cil-scrubber" /> Save
-                </CButton>{" "}
-                <CButton type="reset" size="sm" color="danger">
-                  <CIcon name="cil-ban" /> Reset
-                </CButton>
-              </CCardFooter>
             </CCollapse>
           </CCard>
           <CCard className="mb-0">
@@ -123,16 +82,53 @@ function Goal(props) {
             </CCardHeader>
             <CCollapse show={accordion === 1}>
               <CCardBody>
-                2. Anim pariatur cliche reprehenderit, enim eiusmod high life
-                accusamus terry richardson ad squid. 3 wolf moon officia aute,
-                non cupidatat skateboard dolor brunch. Food truck quinoa
-                nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua
-                put a bird on it squid single-origin coffee nulla assumenda
-                shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore
-                wes anderson cred nesciunt sapiente ea proident. Ad vegan
-                excepteur butcher vice lomo. Leggings occaecat craft beer
-                farm-to-table, raw denim aesthetic synth nesciunt you probably
-                haven''t heard of them accusamus labore sustainable VHS.
+                <CForm action="" method="post" className="form-horizontal">
+                  <CFormGroup row>
+                    <CCol xs="12" md="12">
+                      <h6>
+                        <BsDash />
+                        &nbsp;Number of routes is set to&nbsp;
+                        <CBadge color="secondary">Calculate Best</CBadge>
+                      </h6>
+                    </CCol>
+                  </CFormGroup>
+                  <CFormGroup row>
+                    <CCol xs="12" md="12">
+                      <h6>
+                        <BsDash />
+                        &nbsp;Max routes duration is&nbsp;
+                        <CBadge color="secondary">Not set</CBadge>
+                      </h6>
+                    </CCol>
+                  </CFormGroup>
+                  <CFormGroup row>
+                    <CCol xs="12" md="12">
+                      <h6>
+                        <BsDash />
+                        &nbsp;Max stops is&nbsp;
+                        <CBadge color="secondary">Not set</CBadge>
+                      </h6>
+                    </CCol>
+                  </CFormGroup>
+                  <CFormGroup row>
+                    <CCol xs="12" md="12">
+                      <h6>
+                        <BsDash />
+                        &nbsp;Deviation is&nbsp;
+                        <CBadge color="secondary">Not set</CBadge>
+                      </h6>
+                    </CCol>
+                  </CFormGroup>
+                  <CFormGroup row>
+                    <CCol xs="12" md="12">
+                      <h6>
+                        <BsDash />
+                        &nbsp;Vehicle order-size capacity is&nbsp;
+                        <CBadge color="secondary">Not set</CBadge>
+                      </h6>
+                    </CCol>
+                  </CFormGroup>
+                </CForm>
               </CCardBody>
             </CCollapse>
           </CCard>
@@ -149,16 +145,44 @@ function Goal(props) {
             </CCardHeader>
             <CCollapse show={accordion === 2}>
               <CCardBody>
-                3. Anim pariatur cliche reprehenderit, enim eiusmod high life
-                accusamus terry richardson ad squid. 3 wolf moon officia aute,
-                non cupidatat skateboard dolor brunch. Food truck quinoa
-                nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua
-                put a bird on it squid single-origin coffee nulla assumenda
-                shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore
-                wes anderson cred nesciunt sapiente ea proident. Ad vegan
-                excepteur butcher vice lomo. Leggings occaecat craft beer
-                farm-to-table, raw denim aesthetic synth nesciunt you probably
-                havent heard of them accusamus labore sustainable VHS.
+                <CForm action="" method="post" className="form-horizontal">
+                  <CFormGroup row>
+                    <CCol xs="12" md="12">
+                      <h6>
+                        <BsDash />
+                        &nbsp;Routes are optimized by&nbsp;
+                        <CBadge color="secondary">Minimum distance</CBadge>
+                      </h6>
+                    </CCol>
+                  </CFormGroup>
+                  <CFormGroup row>
+                    <CCol xs="12" md="12">
+                      <h6>
+                        <BsDash />
+                        &nbsp;Territories are&nbsp;
+                        <CBadge color="secondary">Mixed</CBadge>
+                      </h6>
+                    </CCol>
+                  </CFormGroup>
+                  <CFormGroup row>
+                    <CCol xs="12" md="12">
+                      <h6>
+                        <BsDash />
+                        &nbsp;Route departure is set to&nbsp;
+                        <CBadge color="secondary">Nearest First</CBadge>
+                      </h6>
+                    </CCol>
+                  </CFormGroup>
+                  <CFormGroup row>
+                    <CCol xs="12" md="12">
+                      <h6>
+                        <BsDash />
+                        &nbsp;Multi-day (overnight stay) is&nbsp;
+                        <CBadge color="secondary">Not set</CBadge>
+                      </h6>
+                    </CCol>
+                  </CFormGroup>
+                </CForm>
               </CCardBody>
             </CCollapse>
           </CCard>
@@ -168,23 +192,90 @@ function Goal(props) {
                 block
                 color="link"
                 className="text-left m-0 p-0"
-                onClick={() => setAccordion(accordion === 2 ? null : 2)}
+                onClick={() => setAccordion(accordion === 3 ? null : 3)}
               >
                 <h5 className="m-0 p-0">Units & preferences</h5>
               </CButton>
             </CCardHeader>
-            <CCollapse show={accordion === 2}>
+            <CCollapse show={accordion === 3}>
               <CCardBody>
-                3. Anim pariatur cliche reprehenderit, enim eiusmod high life
-                accusamus terry richardson ad squid. 3 wolf moon officia aute,
-                non cupidatat skateboard dolor brunch. Food truck quinoa
-                nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua
-                put a bird on it squid single-origin coffee nulla assumenda
-                shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore
-                wes anderson cred nesciunt sapiente ea proident. Ad vegan
-                excepteur butcher vice lomo. Leggings occaecat craft beer
-                farm-to-table, raw denim aesthetic synth nesciunt you probably
-                havent heard of them accusamus labore sustainable VHS.
+                <CForm action="" method="post" className="form-horizontal">
+                  <CFormGroup row>
+                    <CCol md="3">
+                      <h6>
+                        <BsDash />
+                        &nbsp;Distance Units&nbsp;
+                      </h6>
+                    </CCol>
+                    <CCol md="9">
+                      <CFormGroup variant="checkbox">
+                        <CInputRadio
+                          className="form-check-input"
+                          id="miles"
+                          name="distance"
+                          value="miles"
+                        />
+                        <CLabel variant="checkbox" htmlFor="miles">
+                          Miles
+                        </CLabel>
+                      </CFormGroup>
+                      <CFormGroup variant="checkbox">
+                        <CInputRadio
+                          className="form-check-input"
+                          id="km"
+                          name="distance"
+                          value="km"
+                        />
+                        <CLabel variant="checkbox" htmlFor="km">
+                          Km
+                        </CLabel>
+                      </CFormGroup>
+                    </CCol>
+                  </CFormGroup>
+                  <CFormGroup row>
+                    <CCol md="3">
+                      <h6>
+                        <BsDash />
+                        &nbsp;Travel Mode:&nbsp;
+                      </h6>
+                    </CCol>
+                    <CCol md="9">
+                      <CFormGroup variant="checkbox">
+                        <CInputRadio
+                          className="form-check-input"
+                          id="driving"
+                          name="distance"
+                          value="driving"
+                        />
+                        <CLabel variant="checkbox" htmlFor="driving">
+                          Driving
+                        </CLabel>
+                      </CFormGroup>
+                      <CFormGroup variant="checkbox">
+                        <CInputRadio
+                          className="form-check-input"
+                          id="walking"
+                          name="distance"
+                          value="walking"
+                        />
+                        <CLabel variant="checkbox" htmlFor="walking">
+                          Walking
+                        </CLabel>
+                      </CFormGroup>
+                      <CFormGroup variant="checkbox">
+                        <CInputRadio
+                          className="form-check-input"
+                          id="cycling"
+                          name="distance"
+                          value="cycling"
+                        />
+                        <CLabel variant="checkbox" htmlFor="cycling">
+                          Cycling
+                        </CLabel>
+                      </CFormGroup>
+                    </CCol>
+                  </CFormGroup>
+                </CForm>
               </CCardBody>
             </CCollapse>
           </CCard>
