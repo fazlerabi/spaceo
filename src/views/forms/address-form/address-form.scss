@@ -1,44 +1,27 @@
-label {
-  min-height: 3rem;
-  display: flex;
-  flex-direction: column-reverse;
-}
+@import "../../../scss/variables.scss";
 
-.address-forms {
-  max-height: 700px;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-
-.stop-label {
-  display: flex;
-  position: relative;
-  margin-top: 0.375rem;
-}
-
-.home-label {
-  display: flex;
-  position: relative;
-  margin-top: 3.875rem;
-}
-
-.stop-label,
-.home-label {
-  span {
-    width: 1.5rem;
-    height: 1.5rem;
-    line-height: 22px;
-    text-align: center;
-    border-radius: 50%;
-    border: 1.5px solid black;
-    font-weight: bold;
+.address-form {
+  label {
+    min-height: 3rem;
+    display: flex;
+    flex-direction: column-reverse;
   }
-}
 
-.down-arrow {
-  position: absolute;
-  bottom: -1.1rem;
-  left: 0.1rem;
-  font-weight: lighter;
-  font-size: 20px;
+  .stop-label {
+    margin-top: 0.625rem;
+  }
+
+  .home-label {
+    margin-top: 4.125rem;
+  }
+
+  .stop-label,
+  .home-label {
+    display: flex;
+    position: relative;
+
+    span {
+      margin: auto;
+    }
+  }
 }

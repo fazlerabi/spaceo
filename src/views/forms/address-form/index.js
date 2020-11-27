@@ -7,6 +7,7 @@ import {
   CLabel,
   CInput,
   CRow,
+  CBadge,
 } from "@coreui/react";
 
 import { Formik } from "formik";
@@ -16,7 +17,6 @@ import "./address-form.scss";
 
 const validationSchema = function (values) {
   return Yup.object().shape({
-    title: Yup.string().required("Required"),
     address: Yup.string().required("Required"),
     serviceTime: Yup.string().required("Required"),
     orderSize: Yup.string().required("Required"),
@@ -53,25 +53,8 @@ const initialValues = {
 const onSubmit = (values, { setSubmitting, setErrors }) => {
   setTimeout(() => {
     alert(JSON.stringify(values, null, 2));
-    // console.log('User has been successfully saved!', values)
     setSubmitting(false);
   }, 2000);
-};
-
-const findFirstError = (formName, hasError) => {
-  const form = document.forms[formName];
-  for (let i = 0; i < form.length; i++) {
-    if (hasError(form[i].name)) {
-      form[i].focus();
-      break;
-    }
-  }
-};
-
-const validateForm = (errors) => {
-  findFirstError("simpleForm", (fieldName) => {
-    return Boolean(errors[fieldName]);
-  });
 };
 
 const AddressForm = (props) => {
@@ -89,25 +72,27 @@ const AddressForm = (props) => {
         handleChange,
         handleBlur,
         handleSubmit,
-        isSubmitting,
-        isValid,
       }) => (
-        <CForm onSubmit={handleSubmit} noValidate name="simpleForm">
+        <CForm
+          className="address-form"
+          onSubmit={handleSubmit}
+          noValidate
+          name="simpleForm"
+        >
           <CRow>
             <CCol xs="1" className="px-1">
-              <div className={index === 0 ? "home-label" : "stop-label"}>
-                <span>{index === 0 ? "H" : index}</span>
-                <FaLongArrowAltDown className="down-arrow" />
+              <div className={withLabel ? "home-label" : "stop-label"}>
+                <CBadge color="primary" size="lg">
+                  {index}
+                </CBadge>
               </div>
             </CCol>
             <CCol xs="2" className="px-1">
               <CFormGroup className="mb-2">
-                {withLabel && <CLabel htmlFor="title">Title</CLabel>}
+                {withLabel && <CLabel htmlFor="title">Title (Optional)</CLabel>}
                 <CInput
                   type="text"
                   name="title"
-                  id="title"
-                  placeholder="Title"
                   autoComplete="title"
                   invalid={touched.title && !!errors.title}
                   autoFocus={true}
@@ -119,14 +104,12 @@ const AddressForm = (props) => {
                 <CInvalidFeedback>{errors.title}</CInvalidFeedback>
               </CFormGroup>
             </CCol>
-            <CCol xs="4" className="px-1">
+            <CCol xs="5" className="px-1">
               <CFormGroup className="mb-2">
                 {withLabel && <CLabel htmlFor="address">Address</CLabel>}
                 <CInput
                   type="text"
                   name="address"
-                  id="address"
-                  placeholder="Address"
                   autoComplete="address"
                   invalid={touched.address && !!errors.address}
                   required
@@ -137,7 +120,7 @@ const AddressForm = (props) => {
                 <CInvalidFeedback>{errors.address}</CInvalidFeedback>
               </CFormGroup>
             </CCol>
-            <CCol xs="3" className="px-1">
+            <CCol xs="2" className="px-1">
               <CFormGroup className="mb-2">
                 {withLabel && (
                   <CLabel htmlFor="serviceTime">Service Time</CLabel>
@@ -145,8 +128,6 @@ const AddressForm = (props) => {
                 <CInput
                   type="text"
                   name="serviceTime"
-                  id="serviceTime"
-                  placeholder="Service Time"
                   autoComplete="serviceTime"
                   invalid={touched.serviceTime && !!errors.serviceTime}
                   required
@@ -163,8 +144,6 @@ const AddressForm = (props) => {
                 <CInput
                   type="text"
                   name="orderSize"
-                  id="orderSize"
-                  placeHolder="Size"
                   autoComplete="orderSize"
                   invalid={touched.orderSize && !!errors.orderSize}
                   required
