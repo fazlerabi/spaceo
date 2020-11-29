@@ -1,0 +1,49 @@
+@import "../../scss/_variables.scss";
+
+.route-planner-layout {
+  width: 100%;
+  height: $layout-height;
+
+  .set-end-address {
+    height: $toggle-height;
+
+    span {
+      line-height: $toggle-height;
+      font-size: $md-font-size;
+    }
+  }
+
+  .address-forms {
+    max-height: 730px;
+    overflow: auto;
+  }
+}
+
+// overrides golden layouts
+.lm_header {
+  display: none;
+}
+
+.lm_content {
+  background-color: $transparent !important;
+  border: none !important;
+}
+
+.lm_goldenlayout {
+  background: $transparent !important;
+}
+
+.lm_splitter {
+  width: 30px !important;
+  height: 30px !important;
+  opacity: 1 !important;
+  border-radius: 50%;
+  top: 60px !important;
+  left: 8px !important;
+  cursor: -moz-grab;
+  border: 1px solid $gray;
+}
+
+.lm_item.lm_row {
+  display: flex !important;
+}

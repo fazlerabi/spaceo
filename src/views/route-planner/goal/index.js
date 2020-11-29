@@ -14,8 +14,7 @@ import {
   CInputRadio,
 } from "@coreui/react";
 import { BsDash } from "react-icons/bs";
-import BaseModal from "../../views/base/modal/BaseModal";
-import "./Goal.scss";
+import "./goal.scss";
 
 const initialState = {
   general: true,
@@ -314,10 +313,6 @@ function Goal(props) {
           </div>
         </CCol>
       </CRow>
-
-      <BaseModal open={open} onClose={() => setOpen(false)}>
-        test
-      </BaseModal>
     </>
   );
 }

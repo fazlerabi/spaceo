@@ -1,0 +1,17 @@
+@import "../../../scss/variables";
+
+.configuration-content {
+  height: calc(100% - 40px);
+  border-width: 1px;
+  border-style: solid;
+  border-color: $gray;
+  border-top: none;
+  overflow: auto;
+
+  table {
+    td,
+    th {
+      white-space: nowrap;
+    }
+  }
+}
