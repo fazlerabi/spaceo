@@ -4,4 +4,13 @@
       line-height: 33px;
     }
   }
+
+  .badge {
+    cursor: pointer;
+  }
+
+  #accordion {
+    max-height: 100%;
+    overflow-y: auto;
+  }
 }

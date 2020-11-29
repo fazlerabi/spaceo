@@ -12,7 +12,6 @@ import {
 
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { FaLongArrowAltDown } from "react-icons/fa";
 import "./address-form.scss";
 
 const validationSchema = function (values) {

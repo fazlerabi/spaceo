@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   CHeader,
@@ -12,7 +12,6 @@ import {
   CLink,
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
-import BaseModal from "../../src/views/base/modal/BaseModal";
 
 // routes config
 import routes from "../routes";
@@ -26,7 +25,6 @@ import {
 
 const TheHeader = () => {
   const dispatch = useDispatch();
-  const [open, setOpen] = useState(false);
   const asideShow = useSelector((state) => state.asideShow);
   const darkMode = useSelector((state) => state.darkMode);
   const sidebarShow = useSelector((state) => state.sidebarShow);
@@ -43,10 +41,6 @@ const TheHeader = () => {
       ? true
       : "responsive";
     dispatch({ type: "set", sidebarShow: val });
-  };
-
-  const openSettingsModal = () => {
-    setOpen(true);
   };
 
   return (
@@ -130,20 +124,13 @@ const TheHeader = () => {
               <CIcon name="cil-graph" alt="Dashboard" />
               &nbsp;Dashboard
             </CLink>
-            <CLink
-              className="c-subheader-nav-link"
-              href="#"
-              onClick={openSettingsModal}
-            >
+            <CLink className="c-subheader-nav-link" href="#">
               <CIcon name="cil-settings" alt="Settings" />
               &nbsp;Settings
             </CLink>
           </div>
         </CSubheader>
       </CHeader>
-      <BaseModal open={open} onClose={() => setOpen(false)}>
-        test
-      </BaseModal>
     </>
   );
 };

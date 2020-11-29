@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { CButton, CCard, CCardBody, CCardHeader } from "@coreui/react";
+import { CCard, CCardBody, CCardHeader } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import { Responsive, WidthProvider } from "react-grid-layout";
 import { getStyle } from "@coreui/utils";
+import defaultLayouts from "./_layouts";
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
 import "./Draggable.css";
-import defaultLayouts from "./_layouts";
 
 const breakPoints = {};
 breakPoints.xl = parseInt(getStyle("--breakpoint-xl"), 10);
