@@ -1,6 +1,7 @@
 @import "../../../scss/variables.scss";
 
 .address-form {
+  min-width: $min-layout-width;
   label {
     min-height: 1rem;
     display: flex;

@@ -65,6 +65,9 @@ const RoutePlanner = () => {
       showMaximiseIcon: false,
       showCloseIcon: false,
     },
+    dimensions: {
+      minItemWidth: 500,
+    },
   };
 
   return (

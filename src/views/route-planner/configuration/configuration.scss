@@ -15,6 +15,19 @@
       white-space: nowrap;
     }
   }
+
+  .address-table-card {
+    overflow: auto;
+
+    .data-table {
+      min-width: $min-layout-width;
+
+      .table-responsive {
+        width: auto;
+        overflow-x: initial;
+      }
+    }
+  }
 }
 
 .nav-tabs .nav-link.active {

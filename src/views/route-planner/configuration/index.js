@@ -224,8 +224,8 @@ function Configuration() {
                 </div>
               </CCardBody>
             </CCard>
-            <CCard className="mx-4">
-              <CCardBody>
+            <CCard className="mx-4 address-table-card">
+              <CCardBody className="data-table">
                 <CDataTable
                   items={usersData}
                   fields={fields}
