@@ -7,6 +7,7 @@
   border-color: $gray;
   border-top: none;
   overflow: auto;
+  background: $white;
 
   table {
     td,
@@ -14,4 +15,9 @@
       white-space: nowrap;
     }
   }
+}
+
+.nav-tabs .nav-link.active {
+  background: $white;
+  border-bottom: 1px solid $white;
 }
