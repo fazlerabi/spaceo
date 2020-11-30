@@ -4,7 +4,7 @@ import { withScriptjs, withGoogleMap, GoogleMap } from "react-google-maps";
 
 const defaultZoom = 11;
 const defaultCenter = { lat: 37.431489, lng: -122.163719 };
-const apiKey = process.env.GOOGLE_MAP_API_KEY;
+const apiKey = process.env.REACT_APP_GOOGLE_MAP_API_KEY;
 
 const GoogleMapsComponent = withScriptjs(
   withGoogleMap(() => {
@@ -18,8 +18,8 @@ const GoogleMapsComponent = withScriptjs(
 );
 
 function MapComponent() {
-  return window.google ? (
-    <CCard>
+  return (
+    <CCard className="h-100 ml-3">
       <CCardBody>
         <GoogleMapsComponent
           key="map"
@@ -29,10 +29,6 @@ function MapComponent() {
           mapElement={<div className="h-100" />}
         />
       </CCardBody>
-    </CCard>
-  ) : (
-    <CCard className="ml-3 h-100">
-      <CCardBody>test</CCardBody>
     </CCard>
   );
 }
