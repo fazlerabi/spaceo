@@ -37,6 +37,7 @@
 }
 
 .lm_splitter {
+  min-width: 30px !important;
   width: 30px !important;
   height: 30px !important;
   opacity: 1 !important;
@@ -45,8 +46,26 @@
   left: 8px !important;
   cursor: -moz-grab;
   border: 1px solid $gray;
+  background-image: url("https://planner.myrouteonline.com/route-planner/4338/static/media/divider.77927ec7.svg") !important;
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  &:hover {
+    background-image: url("https://planner.myrouteonline.com/route-planner/4338/static/media/divider-hover.64950cb4.svg") !important;
+    background-size: 100% 100% !important;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
 }
 
 .lm_item.lm_row {
   display: flex !important;
 }
+
+.lm_splitter.lm_horizontal .lm_drag_handle {
+  width: 30px !important;
+  left: 0 !important;
+}
+
+/* This needs to be cleaned up afterwards with the proper plugin or configuration. This is not the best practise but for now, it's just looking good */

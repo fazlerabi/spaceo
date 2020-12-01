@@ -23,7 +23,9 @@ const TheSidebar = () => {
     <CSidebar
       show={show}
       unfoldable
-      onShowChange={(val) => dispatch({ type: "set", sidebarShow: val })}
+      onShowChange={(val) => {
+        dispatch({ type: "set", sidebarShow: val });
+      }}
     >
       <CSidebarBrand className="d-md-down-none" to="/">
         <h4>Upperinc</h4>

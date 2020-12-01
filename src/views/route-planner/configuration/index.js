@@ -19,6 +19,7 @@ import {
   CDataTable,
   CCollapse,
   CButton,
+  CBadge,
   CModal,
   CModalBody,
   CModalFooter,
@@ -27,7 +28,6 @@ import {
   CFormGroup,
   CLabel,
   CInput,
-  CBadge,
 } from "@coreui/react";
 import { FaPlus, FaAddressBook, FaRoute } from "react-icons/fa";
 import AddressForm from "../../forms/address-form";
@@ -198,7 +198,7 @@ function Configuration() {
         </CNav>
         <CTabContent className="configuration-content pt-4">
           <CTabPane>
-            <CCard className="mx-4">
+            <CCard className="mx-4 shadow">
               <CCardBody>
                 <div className="address-forms container-fluid">
                   <AddressForm withLabel={true} index="H" />
@@ -224,15 +224,13 @@ function Configuration() {
                 </div>
               </CCardBody>
             </CCard>
-            <CCard className="mx-4 address-table-card">
+            <CCard className="mx-4 address-table-card shadow">
               <CCardBody className="data-table">
                 <CDataTable
                   items={usersData}
                   fields={fields}
                   columnFilter
                   tableFilter
-                  footer
-                  itemsPerPageSelect
                   itemsPerPage={5}
                   hover
                   sorter
@@ -289,6 +287,29 @@ function Configuration() {
           </CTabPane>
           <CTabPane className="h-100">
             <Goal />
+          </CTabPane>
+          <CTabPane className="h-100">
+            <div className="d-flex flex-column px-3 h-100">
+              <div className="my-auto">
+                <p className="mb-3">
+                  Welcome to our <b>Multiple Stop Route Planner</b>. A route
+                  mapping software to find the best route and navigate with
+                  driving directions
+                </p>
+                <p className="mb-0">
+                  1. Insert addresses, using house number, street, city, state
+                  and zip code.
+                </p>
+                <p className="mb-0">
+                  2. Click 'Set Goals' to include features like service time or
+                  multi-routing.
+                </p>
+                <p className="mb-0">
+                  3. Click 'Plan My Route' to create the best multi-stop route.
+                </p>
+                <p>4. Navigate with MyRoute app</p>
+              </div>
+            </div>
           </CTabPane>
         </CTabContent>
       </CTabs>

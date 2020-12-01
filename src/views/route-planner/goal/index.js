@@ -14,7 +14,10 @@ import {
   CInputRadio,
 } from "@coreui/react";
 import { BsDash } from "react-icons/bs";
+import DepartureTimeModal from "./modals/departureTimeModal.js";
 import "./goal.scss";
+import ServiceTimeModal from "./modals/serviceTimeModal.js";
+import LunchBreakModal from "./modals/lunchBreakModal.js";
 
 const initialState = {
   general: true,
@@ -40,7 +43,9 @@ function reducer(state, action) {
 
 function Goal(props) {
   const [open, setOpen] = useState(false);
-
+  const [departureTimeOpen, setDepartureTimeOpen] = useState(false);
+  const [serviceTimeOpen, setServiceTimeOpen] = useState(false);
+  const [lunchBreakOpen, setLunchBreakOpen] = useState(false);
   const [state, dispatch] = useReducer(reducer, initialState);
 
   return (
@@ -48,7 +53,7 @@ function Goal(props) {
       <CRow className="goal h-100">
         <CCol className="h-100" xl="12">
           <div id="accordion">
-            <CCard className="mb-0">
+            <CCard className="mb-0 rounded-0">
               <CCardHeader id="headingOne">
                 <CButton
                   block
@@ -70,7 +75,7 @@ function Goal(props) {
                           <CBadge
                             color="secondary"
                             onClick={() => {
-                              setOpen(true);
+                              setDepartureTimeOpen(true);
                             }}
                           >
                             9:00
@@ -83,7 +88,14 @@ function Goal(props) {
                         <h6>
                           <BsDash />
                           &nbsp;Service time is&nbsp;
-                          <CBadge color="secondary">0 minutes</CBadge>
+                          <CBadge
+                            color="secondary"
+                            onClick={() => {
+                              setServiceTimeOpen(true);
+                            }}
+                          >
+                            0 minutes
+                          </CBadge>
                         </h6>
                       </CCol>
                     </CFormGroup>
@@ -92,7 +104,14 @@ function Goal(props) {
                         <h6>
                           <BsDash />
                           &nbsp;Lunch break is&nbsp;
-                          <CBadge color="secondary">Not set</CBadge>
+                          <CBadge
+                            color="secondary"
+                            onClick={() => {
+                              setLunchBreakOpen(true);
+                            }}
+                          >
+                            Not set
+                          </CBadge>
                         </h6>
                       </CCol>
                     </CFormGroup>
@@ -100,7 +119,7 @@ function Goal(props) {
                 </CCardBody>
               </CCollapse>
             </CCard>
-            <CCard className="mb-0">
+            <CCard className="mb-0 rounded-0">
               <CCardHeader id="headingTwo">
                 <CButton
                   block
@@ -163,7 +182,7 @@ function Goal(props) {
                 </CCardBody>
               </CCollapse>
             </CCard>
-            <CCard className="mb-0">
+            <CCard className="mb-0 rounded-0">
               <CCardHeader id="headingThree">
                 <CButton
                   block
@@ -217,7 +236,7 @@ function Goal(props) {
                 </CCardBody>
               </CCollapse>
             </CCard>
-            <CCard className="mb-0">
+            <CCard className="mb-0 rounded-0">
               <CCardHeader id="headingThree">
                 <CButton
                   block
@@ -232,13 +251,13 @@ function Goal(props) {
                 <CCardBody>
                   <CForm action="" method="post" className="form-horizontal">
                     <CFormGroup row>
-                      <CCol md="3">
+                      <CCol md="4">
                         <h6>
                           <BsDash />
                           &nbsp;Distance Units&nbsp;
                         </h6>
                       </CCol>
-                      <CCol md="9">
+                      <CCol md="8">
                         <CFormGroup variant="checkbox">
                           <CInputRadio
                             className="form-check-input"
@@ -264,13 +283,13 @@ function Goal(props) {
                       </CCol>
                     </CFormGroup>
                     <CFormGroup row>
-                      <CCol md="3">
+                      <CCol md="4">
                         <h6>
                           <BsDash />
                           &nbsp;Travel Mode:&nbsp;
                         </h6>
                       </CCol>
-                      <CCol md="9">
+                      <CCol md="8">
                         <CFormGroup variant="checkbox">
                           <CInputRadio
                             className="form-check-input"
@@ -313,6 +332,12 @@ function Goal(props) {
           </div>
         </CCol>
       </CRow>
+      <DepartureTimeModal
+        open={departureTimeOpen}
+        setOpen={setDepartureTimeOpen}
+      />
+      <ServiceTimeModal open={serviceTimeOpen} setOpen={setServiceTimeOpen} />
+      <LunchBreakModal open={lunchBreakOpen} setOpen={setLunchBreakOpen} />
     </>
   );
 }

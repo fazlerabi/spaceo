@@ -34,6 +34,9 @@ const TheHeader = () => {
       ? false
       : "responsive";
     dispatch({ type: "set", sidebarShow: val });
+    setTimeout(() => {
+      window.dispatchEvent(new Event("resize"));
+    }, 1000);
   };
 
   const toggleSidebarMobile = () => {
