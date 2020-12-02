@@ -19,7 +19,7 @@ const GoogleMapsComponent = withScriptjs(
 
 function MapComponent() {
   return (
-    <CCard className="h-100 ml-3 shadow-sm">
+    <CCard className="h-100 shadow-sm">
       <CCardBody>
         <GoogleMapsComponent
           key="map"
