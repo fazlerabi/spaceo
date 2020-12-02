@@ -1,4 +1,4 @@
-import React, { useState, useReducer } from "react";
+import React, { useState, useReducer, useRef } from "react";
 import {
   CButton,
   CCard,
@@ -12,11 +12,12 @@ import {
   CBadge,
   CLabel,
   CInputRadio,
+  CPopover,
+  CLink,
+  CInput,
+  CCardFooter,
 } from "@coreui/react";
 import { BsDash } from "react-icons/bs";
-import DepartureTimeModal from "./modals/departureTimeModal.js";
-import ServiceTimeModal from "./modals/serviceTimeModal.js";
-import LunchBreakModal from "./modals/lunchBreakModal.js";
 import "./goal.scss";
 
 const initialState = {
@@ -43,10 +44,12 @@ function reducer(state, action) {
 
 function Goal(props) {
   const [open, setOpen] = useState(false);
-  const [departureTimeOpen, setDepartureTimeOpen] = useState(false);
-  const [serviceTimeOpen, setServiceTimeOpen] = useState(false);
-  const [lunchBreakOpen, setLunchBreakOpen] = useState(false);
   const [state, dispatch] = useReducer(reducer, initialState);
+
+  const clickSave = () => {
+    console.log("here------");
+    document.body.click();
+  };
 
   return (
     <>
@@ -72,14 +75,53 @@ function Goal(props) {
                         <h6>
                           <BsDash />
                           &nbsp;Departure time is&nbsp;
-                          <CBadge
-                            color="secondary"
-                            onClick={() => {
-                              setDepartureTimeOpen(true);
-                            }}
+                          <CPopover
+                            boundary="scrollParent"
+                            content={
+                              <CCard className="m-0">
+                                <CCardHeader>
+                                  <span className="h5">Departure time</span>
+                                </CCardHeader>
+                                <CCardBody>
+                                  <CFormGroup row className="my-0">
+                                    <CCol xs="12">
+                                      <CFormGroup className="mb-0">
+                                        <CLabel className="mb-2">
+                                          Set your preferred time to start your
+                                          route (24h value, e.g. 13:30).
+                                        </CLabel>
+                                        <div className="d-flex align-items-center">
+                                          <CLabel
+                                            htmlFor="departure-time"
+                                            className="mb-0"
+                                          >
+                                            Departure time:&nbsp;&nbsp;
+                                          </CLabel>
+                                          <CInput
+                                            id="departure-time"
+                                            className="w-50"
+                                          />
+                                        </div>
+                                      </CFormGroup>
+                                    </CCol>
+                                  </CFormGroup>
+                                </CCardBody>
+                                <CCardFooter>
+                                  <button
+                                    class="btn btn-primary"
+                                    onClick="function() {console.log('test');}"
+                                  >
+                                    Save
+                                  </button>{" "}
+                                  <CButton color="secondary">Cancel</CButton>
+                                </CCardFooter>
+                              </CCard>
+                            }
+                            interactive={true}
+                            trigger="click"
                           >
-                            9:00
-                          </CBadge>
+                            <CBadge color="secondary">9:00</CBadge>
+                          </CPopover>
                         </h6>
                       </CCol>
                     </CFormGroup>
@@ -88,14 +130,14 @@ function Goal(props) {
                         <h6>
                           <BsDash />
                           &nbsp;Service time is&nbsp;
-                          <CBadge
-                            color="secondary"
-                            onClick={() => {
-                              setServiceTimeOpen(true);
-                            }}
+                          <CPopover
+                            header="Popover header"
+                            content={`Popover with placement`}
+                            interactive={true}
+                            trigger="click"
                           >
-                            0 minutes
-                          </CBadge>
+                            <CBadge color="secondary">0 minutes</CBadge>
+                          </CPopover>
                         </h6>
                       </CCol>
                     </CFormGroup>
@@ -104,14 +146,7 @@ function Goal(props) {
                         <h6>
                           <BsDash />
                           &nbsp;Lunch break is&nbsp;
-                          <CBadge
-                            color="secondary"
-                            onClick={() => {
-                              setLunchBreakOpen(true);
-                            }}
-                          >
-                            Not set
-                          </CBadge>
+                          <CBadge color="secondary">Not set</CBadge>
                         </h6>
                       </CCol>
                     </CFormGroup>
@@ -342,12 +377,6 @@ function Goal(props) {
           </div>
         </CCol>
       </CRow>
-      <DepartureTimeModal
-        open={departureTimeOpen}
-        setOpen={setDepartureTimeOpen}
-      />
-      <ServiceTimeModal open={serviceTimeOpen} setOpen={setServiceTimeOpen} />
-      <LunchBreakModal open={lunchBreakOpen} setOpen={setLunchBreakOpen} />
     </>
   );
 }

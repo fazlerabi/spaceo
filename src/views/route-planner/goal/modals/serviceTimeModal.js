@@ -16,7 +16,12 @@ import "./modal.scss";
 function ServiceTimeModal(props) {
   const { open, setOpen } = props;
   return (
-    <CModal centered color="primary" show={open} onClose={() => setOpen(!open)}>
+    <CModal
+      className="goal-modal"
+      centered
+      show={open}
+      onClose={() => setOpen(!open)}
+    >
       <CModalHeader closeButton>
         <CModalTitle>Service Time</CModalTitle>
       </CModalHeader>

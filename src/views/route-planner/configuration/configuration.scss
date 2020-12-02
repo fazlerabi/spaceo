@@ -27,6 +27,10 @@
         overflow-x: auto;
         margin-bottom: 1rem;
       }
+
+      .pagination {
+        justify-content: flex-end !important;
+      }
     }
   }
 }

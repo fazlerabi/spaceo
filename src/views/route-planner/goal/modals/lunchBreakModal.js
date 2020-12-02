@@ -17,7 +17,12 @@ import "./modal.scss";
 function LunchBreakModal(props) {
   const { open, setOpen } = props;
   return (
-    <CModal centered color="primary" show={open} onClose={() => setOpen(!open)}>
+    <CModal
+      className="goal-modal"
+      centered
+      show={open}
+      onClose={() => setOpen(!open)}
+    >
       <CModalHeader closeButton>
         <CModalTitle>Lunch Break</CModalTitle>
       </CModalHeader>

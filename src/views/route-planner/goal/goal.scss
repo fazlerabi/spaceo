@@ -26,4 +26,16 @@
       }
     }
   }
+
+  .tippy-content {
+    max-width: 500px;
+
+    .popover-body {
+      padding: 0;
+
+      .card-body {
+        font-size: 14px;
+      }
+    }
+  }
 }

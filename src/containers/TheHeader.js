@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   CHeader,
   CToggler,
-  CHeaderBrand,
   CHeaderNav,
   CHeaderNavItem,
   CHeaderNavLink,
@@ -27,24 +26,6 @@ const TheHeader = () => {
   const dispatch = useDispatch();
   const asideShow = useSelector((state) => state.asideShow);
   const darkMode = useSelector((state) => state.darkMode);
-  const sidebarShow = useSelector((state) => state.sidebarShow);
-
-  const toggleSidebar = () => {
-    const val = [true, "responsive"].includes(sidebarShow)
-      ? false
-      : "responsive";
-    dispatch({ type: "set", sidebarShow: val });
-    setTimeout(() => {
-      window.dispatchEvent(new Event("resize"));
-    }, 1000);
-  };
-
-  const toggleSidebarMobile = () => {
-    const val = [false, "responsive"].includes(sidebarShow)
-      ? true
-      : "responsive";
-    dispatch({ type: "set", sidebarShow: val });
-  };
 
   return (
     <>

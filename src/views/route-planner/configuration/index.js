@@ -15,7 +15,6 @@ import {
   CCard,
   CCardBody,
   CDataTable,
-  CCollapse,
   CButton,
   CBadge,
   CModal,
@@ -28,6 +27,8 @@ import {
   CInput,
   CInputCheckbox,
 } from "@coreui/react";
+import CIcon from "@coreui/icons-react";
+
 import { FaPlus, FaAddressBook, FaRoute } from "react-icons/fa";
 import AddressForm from "../../forms/address-form";
 import Goal from "../goal";
@@ -236,11 +237,17 @@ function Configuration() {
                       items={usersData}
                       fields={fields}
                       tableFilter
-                      itemsPerPage={5}
-                      itemsPerPageSelect
+                      itemsPerPage={10}
+                      itemsPerPageSelect={{
+                        label: "Addresses per page: ",
+                        values: [10, 20, 50],
+                      }}
                       hover
                       sorter
                       pagination
+                      onRowClick={() => {
+                        setStopOpen(!stopOpen);
+                      }}
                       scopedSlots={{
                         no: (item, index) => {
                           return (
@@ -255,41 +262,22 @@ function Configuration() {
                           return (
                             <td className="py-2">
                               <CButton
-                                color="primary"
-                                variant="outline"
-                                shape="square"
                                 size="sm"
+                                color="primary"
                                 onClick={() => {
-                                  toggleDetails(index);
+                                  setStopOpen(true);
                                 }}
                               >
-                                {details.includes(index) ? "Hide" : "Show"}
+                                <CIcon name="cil-pencil" />
+                              </CButton>
+                              <CButton
+                                size="sm"
+                                color="danger"
+                                className="ml-1"
+                              >
+                                <CIcon name="cil-trash" />
                               </CButton>
                             </td>
-                          );
-                        },
-                        details: (item, index) => {
-                          return (
-                            <CCollapse show={details.includes(index)}>
-                              <CCardBody>
-                                <CButton
-                                  size="sm"
-                                  color="primary"
-                                  onClick={() => {
-                                    setStopOpen(true);
-                                  }}
-                                >
-                                  Edit Stop
-                                </CButton>
-                                <CButton
-                                  size="sm"
-                                  color="danger"
-                                  className="ml-1"
-                                >
-                                  Delete
-                                </CButton>
-                              </CCardBody>
-                            </CCollapse>
                           );
                         },
                       }}
