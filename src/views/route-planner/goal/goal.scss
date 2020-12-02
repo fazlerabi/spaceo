@@ -17,8 +17,12 @@
   .preferences {
     .d-flex {
       h6 {
-        min-width: 8rem;
+        min-width: 9rem;
         line-height: 20px;
+      }
+
+      .col-inputradio {
+        width: 5rem;
       }
     }
   }

@@ -204,12 +204,9 @@ function Configuration() {
                     <div className="address-forms container-fluid">
                       <AddressForm withLabel={true} index="H" />
                       <CFormGroup row className="mb-2">
-                        <CCol md="12">
-                          <CFormGroup
-                            variant="custom-checkbox"
-                            className="pl-n1"
-                            inline
-                          >
+                        <CCol md="1"></CCol>
+                        <CCol md="9" className="px-0">
+                          <CFormGroup variant="custom-checkbox" inline>
                             <CInputCheckbox
                               custom
                               className="mr-3"
@@ -219,7 +216,6 @@ function Configuration() {
                               onChange={toggleEndAddress}
                             />
                             <CLabel
-                              className="pl-2"
                               variant="custom-checkbox"
                               htmlFor="set-endaddress"
                             >

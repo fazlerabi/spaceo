@@ -260,7 +260,7 @@ function Goal(props) {
                         &nbsp;Distance Units:
                       </h6>
                       <CFormGroup row className="flex-fill">
-                        <CCol md="3">
+                        <div className="col-inputradio">
                           <CFormGroup variant="checkbox" className="mr-2">
                             <CInputRadio
                               className="form-check-input"
@@ -272,8 +272,8 @@ function Goal(props) {
                               Miles
                             </CLabel>
                           </CFormGroup>
-                        </CCol>
-                        <CCol md="3">
+                        </div>
+                        <div className="col-inputradio">
                           <CFormGroup variant="checkbox">
                             <CInputRadio
                               className="form-check-input"
@@ -285,7 +285,7 @@ function Goal(props) {
                               Km
                             </CLabel>
                           </CFormGroup>
-                        </CCol>
+                        </div>
                       </CFormGroup>
                     </div>
                     <div className="d-flex x-100">
@@ -294,7 +294,7 @@ function Goal(props) {
                         &nbsp;Travel Mode:
                       </h6>
                       <CFormGroup row className="flex-fill">
-                        <CCol md="3">
+                        <div className="col-inputradio">
                           <CFormGroup variant="checkbox">
                             <CInputRadio
                               className="form-check-input"
@@ -306,8 +306,8 @@ function Goal(props) {
                               Driving
                             </CLabel>
                           </CFormGroup>
-                        </CCol>
-                        <CCol md="3">
+                        </div>
+                        <div className="col-inputradio">
                           <CFormGroup variant="checkbox">
                             <CInputRadio
                               className="form-check-input"
@@ -319,8 +319,8 @@ function Goal(props) {
                               Walking
                             </CLabel>
                           </CFormGroup>
-                        </CCol>
-                        <CCol md="3">
+                        </div>
+                        <div className="col-inputradio">
                           <CFormGroup variant="checkbox">
                             <CInputRadio
                               className="form-check-input"
@@ -332,7 +332,7 @@ function Goal(props) {
                               Cycling
                             </CLabel>
                           </CFormGroup>
-                        </CCol>
+                        </div>
                       </CFormGroup>
                     </div>
                   </CForm>
