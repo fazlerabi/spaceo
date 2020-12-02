@@ -11,19 +11,20 @@ import {
   CCol,
   CButton,
 } from "@coreui/react";
+import "./modal.scss";
 
 function ServiceTimeModal(props) {
   const { open, setOpen } = props;
   return (
-    <CModal show={open} onClose={() => setOpen(!open)} size="xs">
+    <CModal centered color="primary" show={open} onClose={() => setOpen(!open)}>
       <CModalHeader closeButton>
         <CModalTitle>Service Time</CModalTitle>
       </CModalHeader>
       <CModalBody>
         <CFormGroup row className="my-0">
           <CCol xs="12">
-            <CFormGroup>
-              <CLabel className="mb-3">
+            <CFormGroup className="mb-0">
+              <CLabel className="mb-2">
                 Set the time you need to spend at each stop.
               </CLabel>
               <div className="d-flex align-items-center">

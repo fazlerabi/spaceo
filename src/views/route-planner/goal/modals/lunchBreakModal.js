@@ -12,21 +12,22 @@ import {
   CButton,
   CInputRadio,
 } from "@coreui/react";
+import "./modal.scss";
 
 function LunchBreakModal(props) {
   const { open, setOpen } = props;
   return (
-    <CModal show={open} onClose={() => setOpen(!open)} size="xs">
+    <CModal centered color="primary" show={open} onClose={() => setOpen(!open)}>
       <CModalHeader closeButton>
         <CModalTitle>Lunch Break</CModalTitle>
       </CModalHeader>
       <CModalBody>
         <CFormGroup row className="my-0">
           <CCol xs="12">
-            <CLabel className="mb-3">
+            <CLabel className="mb-2">
               Set the time frame and duration for your lunch break.
             </CLabel>
-            <CFormGroup row>
+            <CFormGroup row className="mb-0">
               <CCol md="12">
                 <CFormGroup variant="checkbox">
                   <CInputRadio

@@ -197,9 +197,9 @@ function Configuration() {
                 </CNavLink>
               </CNavItem>
             </CNav>
-            <CTabContent className="configuration-content pt-4">
+            <CTabContent className="configuration-content">
               <CTabPane>
-                <CCard className="mx-4 shadow">
+                <CCard className="mt-3 mx-3 shadow">
                   <CCardBody>
                     <div className="address-forms container-fluid">
                       <AddressForm withLabel={true} index="H" />
@@ -234,7 +234,7 @@ function Configuration() {
                     </div>
                   </CCardBody>
                 </CCard>
-                <CCard className="mx-4 address-table-card shadow">
+                <CCard className="mx-3 address-table-card shadow">
                   <CCardBody className="data-table">
                     <CDataTable
                       items={usersData}

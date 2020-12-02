@@ -1,0 +1,8 @@
+.modal-dialog {
+  max-width: fit-content;
+  .modal-content {
+    input {
+      max-width: 5rem;
+    }
+  }
+}

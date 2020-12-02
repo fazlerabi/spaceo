@@ -11,19 +11,20 @@ import {
   CCol,
   CButton,
 } from "@coreui/react";
+import "./modal.scss";
 
 function DepartureTimeModal(props) {
   const { open, setOpen } = props;
   return (
-    <CModal show={open} onClose={() => setOpen(!open)} size="xs">
+    <CModal centered color="primary" show={open} onClose={() => setOpen(!open)}>
       <CModalHeader closeButton>
         <CModalTitle>Departure Time</CModalTitle>
       </CModalHeader>
       <CModalBody>
         <CFormGroup row className="my-0">
           <CCol xs="12">
-            <CFormGroup>
-              <CLabel className="mb-3">
+            <CFormGroup className="mb-0">
+              <CLabel className="mb-2">
                 Set your preferred time to start your route (24h value, e.g.
                 13:30).
               </CLabel>

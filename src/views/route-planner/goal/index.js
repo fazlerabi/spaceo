@@ -52,8 +52,8 @@ function Goal(props) {
     <>
       <CRow className="goal h-100">
         <CCol className="h-100" xl="12">
-          <div id="accordion">
-            <CCard className="mb-0 rounded-0">
+          <div className="p-3">
+            <CCard className="shadow">
               <CCardHeader id="headingOne">
                 <CButton
                   block
@@ -119,7 +119,7 @@ function Goal(props) {
                 </CCardBody>
               </CCollapse>
             </CCard>
-            <CCard className="mb-0 rounded-0">
+            <CCard className="shadow">
               <CCardHeader id="headingTwo">
                 <CButton
                   block
@@ -182,7 +182,7 @@ function Goal(props) {
                 </CCardBody>
               </CCollapse>
             </CCard>
-            <CCard className="mb-0 rounded-0">
+            <CCard className="shadow">
               <CCardHeader id="headingThree">
                 <CButton
                   block
@@ -236,7 +236,7 @@ function Goal(props) {
                 </CCardBody>
               </CCollapse>
             </CCard>
-            <CCard className="mb-0 rounded-0">
+            <CCard className="shadow">
               <CCardHeader id="headingThree">
                 <CButton
                   block
