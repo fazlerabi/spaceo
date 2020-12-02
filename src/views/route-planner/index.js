@@ -18,7 +18,7 @@ const RoutePlanner = () => {
           <Configuration />
         </CCol>
         <CCol xs="12" md="6">
-          <></>
+          <MapComponent />
         </CCol>
       </CRow>
     </div>
