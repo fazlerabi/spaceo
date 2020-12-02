@@ -13,7 +13,7 @@ const RoutePlanner = () => {
 
   return (
     <div className="route-planner-layout">
-      <CRow>
+      <CRow className="h-100">
         <CCol xs="12" md="6">
           <Configuration />
         </CCol>
