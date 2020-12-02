@@ -81,7 +81,7 @@ const AddressForm = (props) => {
           <CRow>
             <CCol xs="1" className="px-1">
               <div className={withLabel ? "home-label" : "stop-label"}>
-                <CBadge color="primary" size="lg">
+                <CBadge color="primary" size="lg" className="mx-auto">
                   {index}
                 </CBadge>
               </div>

@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 
 import { useSelector } from "react-redux";
-import { GoldenLayoutComponent } from "@annotationhub/react-golden-layout";
+import { CRow, CCol } from "@coreui/react";
 import MapComponent from "./google-map";
 import Configuration from "./configuration";
 import "./route-planner.scss";
@@ -10,74 +10,17 @@ import "@annotationhub/react-golden-layout/dist/css/themes/goldenlayout-light-th
 
 const RoutePlanner = () => {
   const isDesktop = useSelector((state) => state.isDesktop);
-  const [layoutManager, setLayoutManager] = useState(null);
-
-  const mobileLayout = {
-    content: [
-      {
-        type: "stack",
-        content: [
-          {
-            component: Configuration,
-            title: "Planner",
-            isClosable: false,
-          },
-          {
-            component: MapComponent,
-            title: "Route",
-            isClosable: false,
-          },
-        ],
-      },
-    ],
-    settings: {
-      showPopoutIcon: false,
-      showMaximiseIcon: false,
-      showCloseIcon: false,
-    },
-  };
-
-  const layout = {
-    content: [
-      {
-        type: "row",
-        content: [
-          {
-            component: Configuration,
-            title: "Planner",
-            isClosable: false,
-          },
-          {
-            type: "column",
-            content: [
-              {
-                component: MapComponent,
-                title: "Route",
-                isClosable: false,
-              },
-            ],
-          },
-        ],
-      },
-    ],
-    settings: {
-      showPopoutIcon: false,
-      showMaximiseIcon: false,
-      showCloseIcon: false,
-    },
-    dimensions: {
-      minItemWidth: 500,
-    },
-  };
 
   return (
     <div className="route-planner-layout">
-      <GoldenLayoutComponent
-        config={isDesktop ? layout : mobileLayout}
-        autoresize={true}
-        debounceResize={10}
-        onLayoutReady={setLayoutManager}
-      />
+      <CRow>
+        <CCol xs="12" md="6">
+          <Configuration />
+        </CCol>
+        <CCol xs="12" md="6">
+          <></>
+        </CCol>
+      </CRow>
     </div>
   );
 };

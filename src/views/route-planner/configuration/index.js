@@ -11,8 +11,6 @@ import {
   CDropdownItem,
   CDropdownMenu,
   CDropdownToggle,
-  CSwitch,
-  CRow,
   CCol,
   CCard,
   CCardBody,
@@ -28,6 +26,7 @@ import {
   CFormGroup,
   CLabel,
   CInput,
+  CInputCheckbox,
 } from "@coreui/react";
 import { FaPlus, FaAddressBook, FaRoute } from "react-icons/fa";
 import AddressForm from "../../forms/address-form";
@@ -204,24 +203,31 @@ function Configuration() {
                   <CCardBody>
                     <div className="address-forms container-fluid">
                       <AddressForm withLabel={true} index="H" />
-                      <CRow>
-                        <CCol xs="12" md="12">
-                          <div className="d-flex set-end-address mb-2">
-                            <CSwitch
-                              className="mx-1"
-                              color="primary"
-                              labelOn={"\u2713"}
-                              labelOff={"\u2715"}
-                              size="sm"
-                              checked={endAddress}
-                              onClick={toggleEndAddress}
+                      <CFormGroup row className="mb-2">
+                        <CCol md="12">
+                          <CFormGroup
+                            variant="custom-checkbox"
+                            className="pl-n1"
+                            inline
+                          >
+                            <CInputCheckbox
+                              custom
+                              className="mr-3"
+                              id="set-endaddress"
+                              name="set-endaddress"
+                              value="end-address"
+                              onChange={toggleEndAddress}
                             />
-                            <span className="ml-2">
+                            <CLabel
+                              className="pl-2"
+                              variant="custom-checkbox"
+                              htmlFor="set-endaddress"
+                            >
                               Set End Address or Return Route
-                            </span>
-                          </div>
+                            </CLabel>
+                          </CFormGroup>
                         </CCol>
-                      </CRow>
+                      </CFormGroup>
                       {endAddress && (
                         <AddressForm withLabel={false} index="E" />
                       )}
@@ -233,17 +239,19 @@ function Configuration() {
                     <CDataTable
                       items={usersData}
                       fields={fields}
-                      columnFilter
                       tableFilter
                       itemsPerPage={5}
+                      itemsPerPageSelect
                       hover
                       sorter
                       pagination
                       scopedSlots={{
                         no: (item, index) => {
                           return (
-                            <td classname="py-2">
-                              <CBadge color="primary">{item.no}</CBadge>
+                            <td classname="py-2 d-flex">
+                              <CBadge className="mx-auto" color="primary">
+                                {item.no}
+                              </CBadge>
                             </td>
                           );
                         },

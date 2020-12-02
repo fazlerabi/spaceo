@@ -15,9 +15,9 @@ import {
 } from "@coreui/react";
 import { BsDash } from "react-icons/bs";
 import DepartureTimeModal from "./modals/departureTimeModal.js";
-import "./goal.scss";
 import ServiceTimeModal from "./modals/serviceTimeModal.js";
 import LunchBreakModal from "./modals/lunchBreakModal.js";
+import "./goal.scss";
 
 const initialState = {
   general: true,
@@ -249,82 +249,92 @@ function Goal(props) {
               </CCardHeader>
               <CCollapse show={state.preferences}>
                 <CCardBody>
-                  <CForm action="" method="post" className="form-horizontal">
-                    <CFormGroup row>
-                      <CCol md="4">
-                        <h6>
-                          <BsDash />
-                          &nbsp;Distance Units&nbsp;
-                        </h6>
-                      </CCol>
-                      <CCol md="8">
-                        <CFormGroup variant="checkbox">
-                          <CInputRadio
-                            className="form-check-input"
-                            id="miles"
-                            name="distance"
-                            value="miles"
-                          />
-                          <CLabel variant="checkbox" htmlFor="miles">
-                            Miles
-                          </CLabel>
-                        </CFormGroup>
-                        <CFormGroup variant="checkbox">
-                          <CInputRadio
-                            className="form-check-input"
-                            id="km"
-                            name="distance"
-                            value="km"
-                          />
-                          <CLabel variant="checkbox" htmlFor="km">
-                            Km
-                          </CLabel>
-                        </CFormGroup>
-                      </CCol>
-                    </CFormGroup>
-                    <CFormGroup row>
-                      <CCol md="4">
-                        <h6>
-                          <BsDash />
-                          &nbsp;Travel Mode:&nbsp;
-                        </h6>
-                      </CCol>
-                      <CCol md="8">
-                        <CFormGroup variant="checkbox">
-                          <CInputRadio
-                            className="form-check-input"
-                            id="driving"
-                            name="distance"
-                            value="driving"
-                          />
-                          <CLabel variant="checkbox" htmlFor="driving">
-                            Driving
-                          </CLabel>
-                        </CFormGroup>
-                        <CFormGroup variant="checkbox">
-                          <CInputRadio
-                            className="form-check-input"
-                            id="walking"
-                            name="distance"
-                            value="walking"
-                          />
-                          <CLabel variant="checkbox" htmlFor="walking">
-                            Walking
-                          </CLabel>
-                        </CFormGroup>
-                        <CFormGroup variant="checkbox">
-                          <CInputRadio
-                            className="form-check-input"
-                            id="cycling"
-                            name="distance"
-                            value="cycling"
-                          />
-                          <CLabel variant="checkbox" htmlFor="cycling">
-                            Cycling
-                          </CLabel>
-                        </CFormGroup>
-                      </CCol>
-                    </CFormGroup>
+                  <CForm
+                    action=""
+                    method="post"
+                    className="form-horizontal preferences"
+                  >
+                    <div className="d-flex w-100">
+                      <h6>
+                        <BsDash />
+                        &nbsp;Distance Units:
+                      </h6>
+                      <CFormGroup row className="flex-fill">
+                        <CCol md="3">
+                          <CFormGroup variant="checkbox" className="mr-2">
+                            <CInputRadio
+                              className="form-check-input"
+                              id="miles"
+                              name="distance"
+                              value="miles"
+                            />
+                            <CLabel variant="checkbox" htmlFor="miles">
+                              Miles
+                            </CLabel>
+                          </CFormGroup>
+                        </CCol>
+                        <CCol md="3">
+                          <CFormGroup variant="checkbox">
+                            <CInputRadio
+                              className="form-check-input"
+                              id="km"
+                              name="distance"
+                              value="km"
+                            />
+                            <CLabel variant="checkbox" htmlFor="km">
+                              Km
+                            </CLabel>
+                          </CFormGroup>
+                        </CCol>
+                      </CFormGroup>
+                    </div>
+                    <div className="d-flex x-100">
+                      <h6>
+                        <BsDash />
+                        &nbsp;Travel Mode:
+                      </h6>
+                      <CFormGroup row className="flex-fill">
+                        <CCol md="3">
+                          <CFormGroup variant="checkbox">
+                            <CInputRadio
+                              className="form-check-input"
+                              id="driving"
+                              name="distance"
+                              value="driving"
+                            />
+                            <CLabel variant="checkbox" htmlFor="driving">
+                              Driving
+                            </CLabel>
+                          </CFormGroup>
+                        </CCol>
+                        <CCol md="3">
+                          <CFormGroup variant="checkbox">
+                            <CInputRadio
+                              className="form-check-input"
+                              id="walking"
+                              name="distance"
+                              value="walking"
+                            />
+                            <CLabel variant="checkbox" htmlFor="walking">
+                              Walking
+                            </CLabel>
+                          </CFormGroup>
+                        </CCol>
+                        <CCol md="3">
+                          <CFormGroup variant="checkbox">
+                            <CInputRadio
+                              className="form-check-input"
+                              id="cycling"
+                              name="distance"
+                              value="cycling"
+                            />
+                            <CLabel variant="checkbox" htmlFor="cycling">
+                              Cycling
+                            </CLabel>
+                          </CFormGroup>
+                        </CCol>
+                      </CFormGroup>
+                    </div>
                   </CForm>
                 </CCardBody>
               </CCollapse>

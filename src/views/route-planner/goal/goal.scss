@@ -13,4 +13,13 @@
     max-height: 100%;
     overflow-y: auto;
   }
+
+  .preferences {
+    .d-flex {
+      h6 {
+        min-width: 8rem;
+        line-height: 20px;
+      }
+    }
+  }
 }
