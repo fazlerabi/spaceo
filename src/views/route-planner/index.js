@@ -9,8 +9,6 @@ import "@annotationhub/react-golden-layout/dist/css/goldenlayout-base.css";
 import "@annotationhub/react-golden-layout/dist/css/themes/goldenlayout-light-theme.css";
 
 const RoutePlanner = () => {
-  const isDesktop = useSelector((state) => state.isDesktop);
-
   return (
     <div className="route-planner-layout">
       <CRow className="h-100">

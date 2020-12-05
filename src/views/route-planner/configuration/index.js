@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   CNavLink,
   CTabs,
@@ -27,120 +27,47 @@ import {
   CInput,
   CInputCheckbox,
 } from "@coreui/react";
-import CIcon from "@coreui/icons-react";
-
+import * as XLSX from "xlsx";
 import { FaPlus, FaAddressBook, FaRoute } from "react-icons/fa";
 import AddressForm from "../../forms/address-form";
+import ImportDocumentModal from "../import-document";
 import Goal from "../goal";
 import "./configuration.scss";
 
-const usersData = [
-  {
-    no: 1,
-    title: "Samppa Nori",
-    address: "28 Abel Place, Media PA United States",
-    serviceTime: "",
-    orderSize: "",
-  },
-  {
-    no: 2,
-    title: "Estavan Lykos",
-    address: "28 Abel Place, Media PA United States",
-    serviceTime: "",
-    orderSize: "",
-  },
-  {
-    no: 3,
-    title: "Chetan Mohamed",
-    address: "28 Abel Place, Media PA United States",
-    serviceTime: "",
-    orderSize: "",
-  },
-  {
-    no: 4,
-    title: "Derick Maximinus",
-    address: "28 Abel Place, Media PA United States",
-    serviceTime: "",
-    orderSize: "",
-  },
-  {
-    no: 5,
-    title: "Friderik Dávid",
-    address: "28 Abel Place, Media PA United States",
-    serviceTime: "",
-    orderSize: "",
-  },
-  {
-    no: 6,
-    title: "Yiorgos Avraamu",
-    address: "28 Abel Place, Media PA United States",
-    serviceTime: "",
-    orderSize: "",
-  },
-  {
-    no: 7,
-    title: "Avram Tarasios",
-    address: "28 Abel Place, Media PA United States",
-    serviceTime: "",
-    orderSize: "",
-  },
-  {
-    no: 8,
-    title: "Quintin Ed",
-    address: "28 Abel Place, Media PA United States",
-    serviceTime: "",
-    orderSize: "",
-  },
-  {
-    no: 9,
-    title: "Enéas Kwadwo",
-    address: "28 Abel Place, Media PA United States",
-    serviceTime: "",
-    orderSize: "",
-  },
-  {
-    no: 10,
-    title: "Agapetus Tadeáš",
-    address: "28 Abel Place, Media PA United States",
-    serviceTime: "",
-    orderSize: "",
-  },
-  {
-    no: 11,
-    title: "Carwyn Fachtna",
-    address: "28 Abel Place, Media PA United States",
-    serviceTime: "",
-    orderSize: "",
-  },
-  {
-    no: 12,
-    title: "Nehemiah Tatius",
-    address: "28 Abel Place, Media PA United States",
-    serviceTime: "",
-    orderSize: "",
-  },
-];
+const usersData = [];
 
 function Configuration() {
   const [active, setActive] = useState(0);
   const [endAddress, setEndAddress] = useState(false);
   const [stopOpen, setStopOpen] = useState(false);
+  const [sheet, setSheet] = useState([]);
+  const [xlsx, setXLSX] = useState([]);
+  const [importDocumentOpen, setImportDocumentOpen] = useState(false);
+  const inputRef = useRef(null);
 
   const toggleEndAddress = () => {
     setEndAddress(!endAddress);
   };
 
-  const [details, setDetails] = useState([]);
+  const fileHandler = (event) => {
+    const fileObj = event.target.files[0];
+    const reader = new FileReader();
+    reader.onload = (evt) => {
+      const bstr = evt.target.result;
+      const wb = XLSX.read(bstr, { type: "binary" });
+      const wsname = wb.SheetNames[0];
+      setSheet(wb.SheetNames);
+      const ws = wb.Sheets[wsname];
+      const data = XLSX.utils.sheet_to_json(ws, { raw: true });
+      console.log("data----------", data);
+      setXLSX(data);
+      setImportDocumentOpen(true);
+    };
+    reader.readAsBinaryString(fileObj);
+  };
 
-  const toggleDetails = (index) => {
-    const position = details.indexOf(index);
-    let newDetails = details.slice();
-    if (position !== -1) {
-      newDetails.splice(position, 1);
-    } else {
-      newDetails = [...details, index];
-    }
-    setDetails(newDetails);
+  const importExcelFile = () => {
+    inputRef.current.click();
   };
 
   const fields = [
@@ -160,6 +87,12 @@ function Configuration() {
 
   return (
     <>
+      <input
+        type="file"
+        onChange={fileHandler}
+        className="d-none"
+        ref={inputRef}
+      />
       <CCard className="h-100 shadow-sm">
         <CCardBody>
           <CTabs
@@ -177,7 +110,9 @@ function Configuration() {
                   </CDropdownToggle>
                 </CNavLink>
                 <CDropdownMenu>
-                  <CDropdownItem>Import Excel File</CDropdownItem>
+                  <CDropdownItem onClick={importExcelFile}>
+                    Import Excel File
+                  </CDropdownItem>
                   <CDropdownItem>Bulk Edit</CDropdownItem>
                   <CDropdownItem>Reload Saved Routes</CDropdownItem>
                   <CDropdownItem>Try us with demo addresses</CDropdownItem>
@@ -249,34 +184,12 @@ function Configuration() {
                         setStopOpen(!stopOpen);
                       }}
                       scopedSlots={{
-                        no: (item, index) => {
+                        no: (item) => {
                           return (
                             <td classname="py-2 d-flex">
                               <CBadge className="mx-auto" color="primary">
                                 {item.no}
                               </CBadge>
-                            </td>
-                          );
-                        },
-                        show_details: (item, index) => {
-                          return (
-                            <td className="py-2">
-                              <CButton
-                                size="sm"
-                                color="primary"
-                                onClick={() => {
-                                  setStopOpen(true);
-                                }}
-                              >
-                                <CIcon name="cil-pencil" />
-                              </CButton>
-                              <CButton
-                                size="sm"
-                                color="danger"
-                                className="ml-1"
-                              >
-                                <CIcon name="cil-trash" />
-                              </CButton>
                             </td>
                           );
                         },
@@ -363,6 +276,12 @@ function Configuration() {
           </CModal>
         </CCardBody>
       </CCard>
+      <ImportDocumentModal
+        open={importDocumentOpen}
+        setOpen={setImportDocumentOpen}
+        sheet={sheet}
+        rows={xlsx}
+      />
     </>
   );
 }

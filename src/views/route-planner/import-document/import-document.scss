@@ -1,0 +1,52 @@
+.import-document {
+  td,
+  th {
+    width: 200px;
+    min-width: 200px;
+    display: block;
+    padding: 0.25rem 0.75rem;
+
+    .dropdown {
+      position: initial;
+
+      .dropdown-toggle {
+        display: flex;
+        justify-content: space-between;
+
+        &:after {
+          font-size: 20px;
+          margin-top: 9px;
+        }
+      }
+    }
+
+    &.th-address {
+      width: 500px !important;
+    }
+
+    &.th-service-time {
+      min-width: 100px;
+    }
+
+    &.th-order-size {
+      min-width: 100px;
+    }
+  }
+
+  tr {
+    display: flex;
+  }
+
+  table {
+    display: block;
+    overflow: auto;
+
+    tbody {
+      display: block;
+      max-height: 200px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      width: fit-content;
+    }
+  }
+}

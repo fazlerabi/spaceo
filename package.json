@@ -57,6 +57,7 @@
     "react-text-mask-hoc": "^0.11.0",
     "redux": "4.0.5",
     "spinkit": "2.0.1",
+    "xlsx": "^0.16.9",
     "yup": "^0.29.3"
   },
   "devDependencies": {

@@ -99,20 +99,17 @@ function Goal(props) {
                                           </CLabel>
                                           <CInput
                                             id="departure-time"
-                                            className="w-50"
+                                            className="w-25"
                                           />
                                         </div>
                                       </CFormGroup>
                                     </CCol>
                                   </CFormGroup>
                                 </CCardBody>
-                                <CCardFooter>
-                                  <button
-                                    class="btn btn-primary"
-                                    onClick="function() {console.log('test');}"
-                                  >
+                                <CCardFooter className="d-flex justify-content-end">
+                                  <CButton color="primary" className="mr-3">
                                     Save
-                                  </button>{" "}
+                                  </CButton>
                                   <CButton color="secondary">Cancel</CButton>
                                 </CCardFooter>
                               </CCard>
