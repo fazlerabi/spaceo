@@ -3,24 +3,39 @@ import {
   CDropdown,
   CDropdownToggle,
   CDropdownItem,
-  CDropdownDivider,
   CDropdownMenu,
 } from "@coreui/react";
 
 function Dropdown(props) {
+  const { setDropdownType, selectedItem } = props;
+  const selectedItems = [
+    "Ignore",
+    "Title",
+    "Address",
+    "Service Time",
+    "Order Size",
+    "Territory",
+    "Filter-In",
+    "Filter-Out",
+    "Comments",
+  ];
+
   return (
     <CDropdown className="w-100 btn-group rounded-0">
-      <CDropdownToggle className="rounded-0">Ignore</CDropdownToggle>
+      <CDropdownToggle className="rounded-0">
+        {selectedItems[selectedItem]}
+      </CDropdownToggle>
       <CDropdownMenu>
-        <CDropdownItem>Ignore</CDropdownItem>
-        <CDropdownItem>Title</CDropdownItem>
-        <CDropdownItem>Address</CDropdownItem>
-        <CDropdownItem>Service Time</CDropdownItem>
-        <CDropdownItem>Territory</CDropdownItem>
-        <CDropdownItem>Filter-In</CDropdownItem>
-        <CDropdownItem>Filter-Out</CDropdownItem>
-        <CDropdownItem>Comments</CDropdownItem>
-        <CDropdownItem>Order Size</CDropdownItem>
+        {selectedItems.map((item, index) => {
+          return (
+            <CDropdownItem
+              key={`c-dropdown-${index}`}
+              onClick={() => setDropdownType(index)}
+            >
+              {item}
+            </CDropdownItem>
+          );
+        })}
       </CDropdownMenu>
     </CDropdown>
   );

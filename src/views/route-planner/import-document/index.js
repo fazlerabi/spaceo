@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   CModal,
   CModalBody,
@@ -21,6 +21,67 @@ import "./import-document.scss";
 function ImportDocument(props) {
   const { open, setOpen, rows = null, sheet = [] } = props;
   const [accordion, setAccordion] = useState(1);
+  const [ignoreRow, setIgnoreRow] = useState(false);
+  const [appendToCurrentList, setAppendToCurrentList] = useState(false);
+  const [firstAsStartAddress, setFirstAsStartAddress] = useState(false);
+  const [lastAsEndAddress, setLastAsEndAddress] = useState(false);
+  const [returnToStartAddress, setReturnToStartAddress] = useState(false);
+  const [generatedRows, setGeneratedRows] = useState([]);
+  const [selectedItems, setSelectedItems] = useState(new Array(9).fill(0));
+
+  const headers = (rows && rows.length && Object.keys(rows[0])) || [];
+
+  const setDropdownType = (index, type) => {
+    let selItems = Object.assign([], selectedItems);
+    selItems[index] = type;
+
+    let newRows = [];
+    generatedRows.map((row, i) => {
+      const obj = {};
+      selItems.map((item, j) => {
+        if (item === 1)
+          obj["title"] = (obj["title"] || "") + rows[i][headers[j]] + " ";
+
+        if (item === 2)
+          obj["address"] = (obj["address"] || "") + rows[i][headers[j]] + " ";
+
+        if (item === 3)
+          obj["service_time"] =
+            (obj["service_time"] || "") + rows[i][headers[j]] + " ";
+
+        if (item === 4)
+          obj["order_size"] =
+            (obj["order_size"] || "") + rows[i][headers[j]] + " ";
+
+        if (item === 5)
+          obj["territory"] =
+            (obj["territory"] || "") + rows[i][headers[j]] + " ";
+      });
+
+      newRows.push(obj);
+    });
+
+    setSelectedItems(selItems);
+    setGeneratedRows(newRows);
+  };
+
+  useEffect(() => {
+    setGeneratedRows([...rows]);
+  }, [rows]);
+
+  let resultRows = [];
+  if (ignoreRow) {
+    resultRows = generatedRows.slice(1);
+  } else {
+    resultRows = generatedRows;
+  }
+
+  if (returnToStartAddress && !lastAsEndAddress) {
+    const firstRow = resultRows[0];
+    resultRows = [...resultRows, firstRow];
+  }
+
+  console.log("----------", resultRows);
 
   return (
     <CModal
@@ -54,22 +115,31 @@ function ImportDocument(props) {
             <CFormGroup variant="custom-checkbox" inline>
               <CInputCheckbox
                 custom
-                id="inline-checkbox2"
-                name="inline-checkbox2"
-                value="option2"
+                id="ignore-row"
+                name="ignore_row"
+                checked={ignoreRow}
+                onChange={(e) => {
+                  setIgnoreRow(e.target.checked);
+                }}
               />
-              <CLabel variant="custom-checkbox" htmlFor="inline-checkbox2">
+              <CLabel variant="custom-checkbox" htmlFor="ignore-row">
                 Ignore first row
               </CLabel>
             </CFormGroup>
             <CFormGroup variant="custom-checkbox" inline>
               <CInputCheckbox
                 custom
-                id="inline-checkbox3"
-                name="inline-checkbox3"
-                value="option3"
+                id="append-to-current-list"
+                name="append_to_current_list"
+                checked={appendToCurrentList}
+                onChange={(e) => {
+                  setAppendToCurrentList(e.target.checked);
+                }}
               />
-              <CLabel variant="custom-checkbox" htmlFor="inline-checkbox3">
+              <CLabel
+                variant="custom-checkbox"
+                htmlFor="append-to-current-list"
+              >
                 Append to curent list
               </CLabel>
             </CFormGroup>
@@ -80,33 +150,48 @@ function ImportDocument(props) {
             <CFormGroup variant="custom-checkbox" inline>
               <CInputCheckbox
                 custom
-                id="inline-checkbox3"
-                name="inline-checkbox3"
-                value="option3"
+                id="first-as-start-address"
+                name="first_as_start_address"
+                checked={firstAsStartAddress}
+                onChange={(e) => {
+                  setFirstAsStartAddress(e.target.checked);
+                }}
               />
-              <CLabel variant="custom-checkbox" htmlFor="inline-checkbox3">
+              <CLabel
+                variant="custom-checkbox"
+                htmlFor="first-as-start-address"
+              >
                 Set first as start address
               </CLabel>
             </CFormGroup>
             <CFormGroup variant="custom-checkbox" inline>
               <CInputCheckbox
                 custom
-                id="inline-checkbox3"
-                name="inline-checkbox3"
-                value="option3"
+                id="last-as-end-address"
+                name="last_as_end_address"
+                checked={lastAsEndAddress}
+                onChange={(e) => {
+                  setLastAsEndAddress(e.target.checked);
+                }}
               />
-              <CLabel variant="custom-checkbox" htmlFor="inline-checkbox3">
+              <CLabel variant="custom-checkbox" htmlFor="last-as-end-address">
                 Set last as end address
               </CLabel>
             </CFormGroup>
             <CFormGroup variant="custom-checkbox" inline>
               <CInputCheckbox
                 custom
-                id="inline-checkbox3"
-                name="inline-checkbox3"
-                value="option3"
+                id="return-to-start-address"
+                name="return_to_end_address"
+                checked={returnToStartAddress}
+                onChange={(e) => {
+                  setReturnToStartAddress(e.target.checked);
+                }}
               />
-              <CLabel variant="custom-checkbox" htmlFor="inline-checkbox3">
+              <CLabel
+                variant="custom-checkbox"
+                htmlFor="return-to-start-address"
+              >
                 Return to start address
               </CLabel>
             </CFormGroup>
@@ -159,28 +244,26 @@ function ImportDocument(props) {
         </CRow>
         <CRow className="mb-3">
           <CCol>
-            <table className="table table-bordered">
+            <table className="table table-bordered pre-render-table">
               <thead>
                 <tr>
                   {rows &&
                     rows.length &&
-                    Object.keys(rows[0]).map(() => {
+                    Object.keys(rows[0]).map((item, index) => {
                       return (
                         <th scope="col" className="p-0">
-                          <Dropdown />
+                          <Dropdown
+                            selectedItem={selectedItems[index]}
+                            setDropdownType={(type) =>
+                              setDropdownType(index, type)
+                            }
+                          />
                         </th>
                       );
                     })}
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  {rows &&
-                    rows.length &&
-                    Object.keys(rows[0]).map((cell) => {
-                      return <td>{cell}</td>;
-                    })}
-                </tr>
                 {rows.map((row) => {
                   return (
                     <tr>
@@ -197,10 +280,12 @@ function ImportDocument(props) {
         <CRow>
           <CCol>
             <p>Review the results preview and select import now.</p>
-            <table className="table table-bordered table-light">
+            <table className="table table-bordered table-light eliminated-table">
               <thead>
                 <tr>
-                  <th scope="col">Title</th>
+                  <th className="th-title" scope="col">
+                    Title
+                  </th>
                   <th className="th-address" scope="col">
                     Address
                   </th>
@@ -210,9 +295,24 @@ function ImportDocument(props) {
                   <th className="th-order-size" scope="col">
                     Order Size
                   </th>
+                  <th className="th-territory" scope="col">
+                    Territory
+                  </th>
                 </tr>
               </thead>
-              <tbody></tbody>
+              <tbody>
+                {resultRows.map((row) => {
+                  return (
+                    <tr>
+                      <td className="td-title">{row["title"]}</td>
+                      <td className="td-address">{row["address"]}</td>
+                      <td className="td-service-time">{row["service_time"]}</td>
+                      <td className="td-order-size">{row["order_size"]}</td>
+                      <td className="td-territory">{row["territory"]}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
             </table>
           </CCol>
         </CRow>

@@ -59,8 +59,15 @@ function Configuration() {
       setSheet(wb.SheetNames);
       const ws = wb.Sheets[wsname];
       const data = XLSX.utils.sheet_to_json(ws, { raw: true });
-      console.log("data----------", data);
-      setXLSX(data);
+      const obj = {};
+      if (data && data.length) {
+        Object.keys(data[0]).map((key) => {
+          obj[key] = key;
+        });
+        setXLSX([obj, ...data]);
+      } else {
+        setXLSX(data);
+      }
       setImportDocumentOpen(true);
     };
     reader.readAsBinaryString(fileObj);

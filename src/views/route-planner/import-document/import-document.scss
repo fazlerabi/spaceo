@@ -20,6 +20,10 @@
       }
     }
 
+    &.th-title {
+      width: 200px !important;
+    }
+
     &.th-address {
       width: 500px !important;
     }
@@ -30,6 +34,26 @@
 
     &.th-order-size {
       min-width: 100px;
+    }
+  }
+
+  table.eliminated-table {
+    td {
+      &.td-title {
+        width: 200px !important;
+      }
+
+      &.td-address {
+        width: 500px !important;
+      }
+
+      &.td-service-time {
+        min-width: 100px;
+      }
+
+      &.td-order-size {
+        min-width: 100px;
+      }
     }
   }
 
