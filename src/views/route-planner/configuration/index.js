@@ -27,14 +27,15 @@ import {
   CInput,
   CInputCheckbox,
 } from "@coreui/react";
+import CIcon from "@coreui/icons-react";
 import * as XLSX from "xlsx";
+import classNames from "classnames";
 import { FaPlus, FaAddressBook, FaRoute } from "react-icons/fa";
 import AddressForm from "../../forms/address-form";
 import ImportDocumentModal from "../import-document";
 import Goal from "../goal";
+import { fromAddress } from "../../../utils/index";
 import "./configuration.scss";
-
-const usersData = [];
 
 function Configuration() {
   const [active, setActive] = useState(0);
@@ -43,6 +44,7 @@ function Configuration() {
   const [sheet, setSheet] = useState([]);
   const [xlsx, setXLSX] = useState([]);
   const [importDocumentOpen, setImportDocumentOpen] = useState(false);
+  const [importedAddresses, setImportedAddresses] = useState([]);
   const inputRef = useRef(null);
 
   const toggleEndAddress = () => {
@@ -73,16 +75,34 @@ function Configuration() {
     reader.readAsBinaryString(fileObj);
   };
 
+  const setAddress = async (rows) => {
+    const verifiedAddresses = await Promise.all(
+      rows.map((row) => fromAddress(row.address, row.type))
+    );
+    setImportedAddresses(
+      verifiedAddresses.map((row) => {
+        const key = Object.keys(row)[0];
+        const value = row[key];
+
+        const relatedAddress = rows.filter((a) => a.type == key)[0];
+
+        return { verified: value, ...relatedAddress };
+      })
+    );
+  };
+
+  console.log("importedAddresses: ", importedAddresses);
+
   const importExcelFile = () => {
     inputRef.current.click();
   };
 
   const fields = [
-    "no",
+    "type",
     { key: "title", _style: { width: "20%" } },
     "address",
-    { key: "serviceTime", _style: { width: "10%" } },
-    { key: "orderSize", _style: { width: "10%" } },
+    { key: "service_time", _style: { width: "10%" } },
+    { key: "order_size", _style: { width: "10%" } },
     {
       key: "show_details",
       label: "",
@@ -176,7 +196,7 @@ function Configuration() {
                 <CCard className="mx-3 address-table-card shadow">
                   <CCardBody className="data-table">
                     <CDataTable
-                      items={usersData}
+                      items={importedAddresses}
                       fields={fields}
                       tableFilter
                       itemsPerPage={10}
@@ -193,10 +213,45 @@ function Configuration() {
                       scopedSlots={{
                         no: (item) => {
                           return (
-                            <td classname="py-2 d-flex">
+                            <td className="py-2 d-flex">
                               <CBadge className="mx-auto" color="primary">
                                 {item.no}
                               </CBadge>
+                            </td>
+                          );
+                        },
+                        address: (item) => {
+                          return (
+                            <td className={item.verified ? "verified" : ""}>
+                              {item.address}
+                            </td>
+                          );
+                        },
+                        service_time: (item) => {
+                          return <td>{item.service_time || ""}</td>;
+                        },
+                        order_size: (item) => {
+                          return <td>{item.order_size || ""}</td>;
+                        },
+                        show_details: (item, index) => {
+                          return (
+                            <td className="py-2">
+                              <CButton
+                                size="sm"
+                                color="primary"
+                                onClick={() => {
+                                  setStopOpen(true);
+                                }}
+                              >
+                                <CIcon name="cil-pencil" />
+                              </CButton>
+                              <CButton
+                                size="sm"
+                                color="danger"
+                                className="ml-1"
+                              >
+                                <CIcon name="cil-trash" />
+                              </CButton>
                             </td>
                           );
                         },
@@ -286,6 +341,7 @@ function Configuration() {
       <ImportDocumentModal
         open={importDocumentOpen}
         setOpen={setImportDocumentOpen}
+        setAddress={setAddress}
         sheet={sheet}
         rows={xlsx}
       />

@@ -19,7 +19,7 @@ import Dropdown from "./dropdown";
 import "./import-document.scss";
 
 function ImportDocument(props) {
-  const { open, setOpen, rows = null, sheet = [] } = props;
+  const { open, setOpen, rows = null, sheet = [], setAddress } = props;
   const [accordion, setAccordion] = useState(1);
   const [ignoreRow, setIgnoreRow] = useState(false);
   const [appendToCurrentList, setAppendToCurrentList] = useState(false);
@@ -69,19 +69,40 @@ function ImportDocument(props) {
     setGeneratedRows([...rows]);
   }, [rows]);
 
-  let resultRows = [];
-  if (ignoreRow) {
-    resultRows = generatedRows.slice(1);
-  } else {
-    resultRows = generatedRows;
+  let resultRows = generatedRows;
+  if (resultRows && resultRows.length) {
+    if (ignoreRow) {
+      resultRows = resultRows.slice(1);
+    } else {
+      resultRows = resultRows;
+    }
+
+    if (firstAsStartAddress) {
+      resultRows[0].type = "H";
+      resultRows.map((row, index) => {
+        if (index >= 1) {
+          row.type = index;
+        }
+      });
+    } else {
+      resultRows.map((row, index) => {
+        row.type = index + 1;
+      });
+    }
+
+    if (returnToStartAddress && !lastAsEndAddress) {
+      const firstRow = resultRows[0];
+      resultRows = [...resultRows, firstRow];
+      resultRows[resultRows.length - 1].type = "E";
+    } else if (lastAsEndAddress) {
+      resultRows[resultRows.length - 1].type = "E";
+    }
   }
 
-  if (returnToStartAddress && !lastAsEndAddress) {
-    const firstRow = resultRows[0];
-    resultRows = [...resultRows, firstRow];
-  }
-
-  console.log("----------", resultRows);
+  const importNow = () => {
+    setAddress(resultRows);
+    setOpen(false);
+  };
 
   return (
     <CModal
@@ -250,16 +271,17 @@ function ImportDocument(props) {
                   {rows &&
                     rows.length &&
                     Object.keys(rows[0]).map((item, index) => {
-                      return (
-                        <th scope="col" className="p-0">
-                          <Dropdown
-                            selectedItem={selectedItems[index]}
-                            setDropdownType={(type) =>
-                              setDropdownType(index, type)
-                            }
-                          />
-                        </th>
-                      );
+                      if (item !== "type")
+                        return (
+                          <th scope="col" className="p-0">
+                            <Dropdown
+                              selectedItem={selectedItems[index]}
+                              setDropdownType={(type) =>
+                                setDropdownType(index, type)
+                              }
+                            />
+                          </th>
+                        );
                     })}
                 </tr>
               </thead>
@@ -268,7 +290,7 @@ function ImportDocument(props) {
                   return (
                     <tr>
                       {Object.keys(row).map((cell) => {
-                        return <td>{row[cell]}</td>;
+                        if (cell !== "type") return <td>{row[cell]}</td>;
                       })}
                     </tr>
                   );
@@ -283,6 +305,9 @@ function ImportDocument(props) {
             <table className="table table-bordered table-light eliminated-table">
               <thead>
                 <tr>
+                  <th className="th-type" scope="col">
+                    Type
+                  </th>
                   <th className="th-title" scope="col">
                     Title
                   </th>
@@ -304,6 +329,7 @@ function ImportDocument(props) {
                 {resultRows.map((row) => {
                   return (
                     <tr>
+                      <td className="td-type">{row["type"]}</td>
                       <td className="td-title">{row["title"]}</td>
                       <td className="td-address">{row["address"]}</td>
                       <td className="td-service-time">{row["service_time"]}</td>
@@ -318,7 +344,7 @@ function ImportDocument(props) {
         </CRow>
       </CModalBody>
       <CModalFooter>
-        <CButton color="primary" onClick={() => setOpen(!open)}>
+        <CButton color="primary" onClick={importNow}>
           Import Now
         </CButton>{" "}
         <CButton color="secondary" onClick={() => setOpen(!open)}>

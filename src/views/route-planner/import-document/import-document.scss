@@ -20,6 +20,11 @@
       }
     }
 
+    &.th-type {
+      min-width: 50px !important;
+      width: 50px !important;
+    }
+
     &.th-title {
       width: 200px !important;
     }
@@ -39,6 +44,12 @@
 
   table.eliminated-table {
     td {
+      &.td-type {
+        min-width: 50px !important;
+        width: 50px !important;
+        text-align: center;
+      }
+
       &.td-title {
         width: 200px !important;
       }
