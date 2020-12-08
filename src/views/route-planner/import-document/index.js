@@ -15,19 +15,32 @@ import {
   CCollapse,
 } from "@coreui/react";
 import { GrDocumentUpload } from "react-icons/gr";
+import _ from "lodash";
 import Dropdown from "./dropdown";
 import "./import-document.scss";
+
+const dropdownItems = [
+  "Ignore",
+  "Title",
+  "Address",
+  "Service Time",
+  "Order Size",
+  "Territory",
+  "Filter-In",
+  "Filter-Out",
+  "Comments",
+];
 
 function ImportDocument(props) {
   const { open, setOpen, rows = null, sheet = [], setAddress } = props;
   const [accordion, setAccordion] = useState(1);
-  const [ignoreRow, setIgnoreRow] = useState(false);
+  const [ignoreRow, setIgnoreRow] = useState(true);
   const [appendToCurrentList, setAppendToCurrentList] = useState(false);
-  const [firstAsStartAddress, setFirstAsStartAddress] = useState(false);
+  const [firstAsStartAddress, setFirstAsStartAddress] = useState(true);
   const [lastAsEndAddress, setLastAsEndAddress] = useState(false);
-  const [returnToStartAddress, setReturnToStartAddress] = useState(false);
+  const [returnToStartAddress, setReturnToStartAddress] = useState(true);
   const [generatedRows, setGeneratedRows] = useState([]);
-  const [selectedItems, setSelectedItems] = useState(new Array(9).fill(0));
+  const [selectedItems, setSelectedItems] = useState([]);
 
   const headers = (rows && rows.length && Object.keys(rows[0])) || [];
 
@@ -35,10 +48,14 @@ function ImportDocument(props) {
     let selItems = Object.assign([], selectedItems);
     selItems[index] = type;
 
+    setSelectedItems(selItems);
+  };
+
+  useEffect(() => {
     let newRows = [];
     generatedRows.map((row, i) => {
       const obj = {};
-      selItems.map((item, j) => {
+      selectedItems.map((item, j) => {
         if (item === 1)
           obj["title"] = (obj["title"] || "") + rows[i][headers[j]] + " ";
 
@@ -60,13 +77,42 @@ function ImportDocument(props) {
 
       newRows.push(obj);
     });
-
-    setSelectedItems(selItems);
     setGeneratedRows(newRows);
-  };
+  }, [selectedItems]);
 
   useEffect(() => {
     setGeneratedRows([...rows]);
+    if (rows && rows.length) {
+      const selItems = headers.map((key, index) => {
+        const results = rows.map((row) => {
+          return (
+            (row[key] || "").toString().split(" ").length - 1 >= 2 ||
+            (row[key] || "").toString().split(", ").length - 1 >= 1
+          );
+        });
+
+        const titleCounts = _.countBy(
+          rows.map((row) => {
+            return (row[key] || "").toString().split(" ").length - 1 === 1;
+          }),
+          (a) => a === true
+        );
+
+        const count = _.countBy(results, (a) => a === true);
+        const activeCount = count["true"] || 0;
+        const inactiveCount = count["false"] || 0;
+
+        if (activeCount > inactiveCount) {
+          return 2;
+        } else if (titleCounts["true"] > titleCounts["false"]) {
+          return 1;
+        } else {
+          return 0;
+        }
+      });
+
+      setSelectedItems(selItems);
+    }
   }, [rows]);
 
   let resultRows = generatedRows;
@@ -91,7 +137,7 @@ function ImportDocument(props) {
     }
 
     if (returnToStartAddress && !lastAsEndAddress) {
-      const firstRow = resultRows[0];
+      const firstRow = Object.assign({}, resultRows[0]);
       resultRows = [...resultRows, firstRow];
       resultRows[resultRows.length - 1].type = "E";
     } else if (lastAsEndAddress) {
@@ -109,7 +155,8 @@ function ImportDocument(props) {
       className="import-document"
       show={open}
       onClose={() => setOpen(!open)}
-      size="xl"
+      size="lg"
+      centered
     >
       <CModalHeader closeButton>
         <CModalTitle className="d-flex align-items-center">
@@ -131,7 +178,7 @@ function ImportDocument(props) {
           </CCol>
           <CCol
             md="8"
-            className="d-flex justify-content-end align-items-center"
+            className="d-flex justify-content-end align-items-end pb-3"
           >
             <CFormGroup variant="custom-checkbox" inline>
               <CInputCheckbox

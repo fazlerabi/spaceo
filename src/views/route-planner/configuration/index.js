@@ -29,12 +29,11 @@ import {
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import * as XLSX from "xlsx";
-import classNames from "classnames";
 import { FaPlus, FaAddressBook, FaRoute } from "react-icons/fa";
 import AddressForm from "../../forms/address-form";
 import ImportDocumentModal from "../import-document";
 import Goal from "../goal";
-import { fromAddress } from "../../../utils/index";
+import { validateAddress } from "../../../utils/index";
 import "./configuration.scss";
 
 function Configuration() {
@@ -60,8 +59,9 @@ function Configuration() {
       const wsname = wb.SheetNames[0];
       setSheet(wb.SheetNames);
       const ws = wb.Sheets[wsname];
-      const data = XLSX.utils.sheet_to_json(ws, { raw: true });
+      const data = XLSX.utils.sheet_to_json(ws, { raw: true, defval: null });
       const obj = {};
+
       if (data && data.length) {
         Object.keys(data[0]).map((key) => {
           obj[key] = key;
@@ -76,8 +76,9 @@ function Configuration() {
   };
 
   const setAddress = async (rows) => {
+    console.log(rows);
     const verifiedAddresses = await Promise.all(
-      rows.map((row) => fromAddress(row.address, row.type))
+      rows.map((row) => validateAddress(row.address, row.type))
     );
     setImportedAddresses(
       verifiedAddresses.map((row) => {
@@ -90,8 +91,6 @@ function Configuration() {
       })
     );
   };
-
-  console.log("importedAddresses: ", importedAddresses);
 
   const importExcelFile = () => {
     inputRef.current.click();

@@ -4,7 +4,9 @@
     width: 200px;
     min-width: 200px;
     display: block;
-    padding: 0.25rem 0.75rem;
+    padding: 0 0.75rem;
+    white-space: nowrap;
+    overflow: hidden;
 
     .dropdown {
       position: initial;
@@ -30,7 +32,7 @@
     }
 
     &.th-address {
-      width: 500px !important;
+      width: 400px !important;
     }
 
     &.th-service-time {
@@ -55,7 +57,7 @@
       }
 
       &.td-address {
-        width: 500px !important;
+        width: 400px !important;
       }
 
       &.td-service-time {
@@ -78,7 +80,7 @@
 
     tbody {
       display: block;
-      max-height: 200px;
+      max-height: 100px;
       overflow-y: auto;
       overflow-x: hidden;
       width: fit-content;
