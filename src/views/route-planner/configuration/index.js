@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   CNavLink,
   CTabs,
@@ -26,6 +26,7 @@ import {
   CLabel,
   CInput,
   CInputCheckbox,
+  CProgress,
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import * as XLSX from "xlsx";
@@ -37,14 +38,22 @@ import { validateAddress } from "../../../utils/index";
 import "./configuration.scss";
 
 function Configuration() {
+  const [progress, setProgress] = useState(0);
+  const [percent, setPercent] = useState(0);
   const [active, setActive] = useState(0);
   const [endAddress, setEndAddress] = useState(false);
   const [stopOpen, setStopOpen] = useState(false);
   const [sheet, setSheet] = useState([]);
   const [xlsx, setXLSX] = useState([]);
   const [importDocumentOpen, setImportDocumentOpen] = useState(false);
+  const [progressBarOpen, setProgressBarOpen] = useState(false);
+  const [addressLength, setAddressLength] = useState(0);
   const [importedAddresses, setImportedAddresses] = useState([]);
   const inputRef = useRef(null);
+
+  const increment = () => {
+    setProgress(Math.random());
+  };
 
   const toggleEndAddress = () => {
     setEndAddress(!endAddress);
@@ -75,11 +84,18 @@ function Configuration() {
     reader.readAsBinaryString(fileObj);
   };
 
+  useEffect(() => {
+    setPercent(percent + 1);
+  }, [progress]);
+
   const setAddress = async (rows) => {
-    console.log(rows);
+    setProgress(0);
+    setAddressLength(rows.length);
+    setProgressBarOpen(true);
     const verifiedAddresses = await Promise.all(
-      rows.map((row) => validateAddress(row.address, row.type))
+      rows.map((row) => validateAddress(row.address, row.type, increment))
     );
+    setProgressBarOpen(false);
     setImportedAddresses(
       verifiedAddresses.map((row) => {
         const key = Object.keys(row)[0];
@@ -90,6 +106,10 @@ function Configuration() {
         return { verified: value, ...relatedAddress };
       })
     );
+  };
+
+  const cancelImport = () => {
+    setProgressBarOpen(false);
   };
 
   const importExcelFile = () => {
@@ -214,7 +234,7 @@ function Configuration() {
                           return (
                             <td className="py-2 d-flex">
                               <CBadge className="mx-auto" color="primary">
-                                {item.no}
+                                {item.no || ""}
                               </CBadge>
                             </td>
                           );
@@ -222,7 +242,7 @@ function Configuration() {
                         address: (item) => {
                           return (
                             <td className={item.verified ? "verified" : ""}>
-                              {item.address}
+                              {item.address || ""}
                             </td>
                           );
                         },
@@ -337,6 +357,28 @@ function Configuration() {
           </CModal>
         </CCardBody>
       </CCard>
+      <CModal
+        show={progressBarOpen}
+        onClose={() => setProgressBarOpen(false)}
+        size="md"
+      >
+        <CModalHeader closeButton>
+          <CModalTitle>Processing...</CModalTitle>
+        </CModalHeader>
+        <CModalBody>
+          <CProgress
+            color="primary"
+            value={addressLength === 0 ? 0 : (percent / addressLength) * 100}
+            showValue
+            className="mb-1 bg-white"
+          />
+        </CModalBody>
+        <CModalFooter>
+          <CButton color="secondary" onClick={cancelImport}>
+            Cancel
+          </CButton>
+        </CModalFooter>
+      </CModal>
       <ImportDocumentModal
         open={importDocumentOpen}
         setOpen={setImportDocumentOpen}

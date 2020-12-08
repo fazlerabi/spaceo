@@ -25,10 +25,9 @@ export const fromAddress = async (address) => {
   }
 };
 
-export const validateAddress = async (address, index) => {
+export const validateAddress = async (address, index, func) => {
   const response = await axios.get(
     "https://maps.googleapis.com/maps/api/geocode/json",
-
     {
       params: {
         address,
@@ -38,6 +37,6 @@ export const validateAddress = async (address, index) => {
   );
 
   if (response.data.results.length === 0) return { [index]: false };
-
+  func();
   return { [index]: true };
 };

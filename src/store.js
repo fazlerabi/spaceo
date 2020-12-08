@@ -5,6 +5,7 @@ const initialState = {
   isDesktop: true,
   asideShow: false,
   darkMode: false,
+  progress: 0,
 };
 
 const changeState = (state = initialState, { type, ...rest }) => {
