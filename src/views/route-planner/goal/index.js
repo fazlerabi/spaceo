@@ -46,7 +46,6 @@ function Goal(props) {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const clickSave = () => {
-    console.log("here------");
     document.body.click();
   };
 

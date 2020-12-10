@@ -208,8 +208,12 @@ function ImportDocument(props) {
               <CLabel htmlFor="sheet">Select a sheet</CLabel>
               <CSelect custom name="sheet" id="sheet" onChange={onChangeSheet}>
                 {wb &&
-                  wb.SheetNames.map((s) => {
-                    return <option value={s}>{s}</option>;
+                  wb.SheetNames.map((s, index) => {
+                    return (
+                      <option value={s} key={`option__${index}`}>
+                        {s}
+                      </option>
+                    );
                   })}
               </CSelect>
               <p className="mb-0 ml-2">{rows.length} rows</p>
@@ -358,7 +362,7 @@ function ImportDocument(props) {
                 </CPopover>
               </CCardHeader>
               <CCardBody>
-                <table className="table table-bordered pre-render-table">
+                <table className="table table-bordered table-striped pre-render-table">
                   <thead>
                     <tr>
                       {rows &&
@@ -366,7 +370,11 @@ function ImportDocument(props) {
                         Object.keys(rows[0]).map((item, index) => {
                           if (item !== "type")
                             return (
-                              <th scope="col" className="p-0">
+                              <th
+                                key={`t-head-${index}`}
+                                scope="col"
+                                className="p-0"
+                              >
                                 <Dropdown
                                   selectedItem={selectedItems[index]}
                                   setDropdownType={(type) =>
@@ -379,11 +387,12 @@ function ImportDocument(props) {
                     </tr>
                   </thead>
                   <tbody>
-                    {rows.map((row) => {
+                    {rows.map((row, index) => {
                       return (
-                        <tr>
-                          {Object.keys(row).map((cell) => {
-                            if (cell !== "type") return <td>{row[cell]}</td>;
+                        <tr key={`table-row-${index}`}>
+                          {Object.keys(row).map((cell, i) => {
+                            if (cell !== "type")
+                              return <td key={`cell--${i}`}>{row[cell]}</td>;
                           })}
                         </tr>
                       );
@@ -405,7 +414,7 @@ function ImportDocument(props) {
                 </CLink>
               </CCardHeader>
               <CCardBody>
-                <table className="table table-bordered table-light eliminated-table mb-0">
+                <table className="table table-bordered table-striped eliminated-table mb-0">
                   <thead>
                     <tr>
                       <th className="th-type" scope="col">
@@ -429,9 +438,9 @@ function ImportDocument(props) {
                     </tr>
                   </thead>
                   <tbody>
-                    {resultRows.map((row) => {
+                    {resultRows.map((row, index) => {
                       return (
-                        <tr>
+                        <tr key={`result-row-${index}`}>
                           <td className="td-type">
                             <CBadge color="primary">{row["type"]}</CBadge>
                           </td>

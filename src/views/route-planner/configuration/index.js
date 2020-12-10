@@ -67,7 +67,6 @@ function Configuration() {
       const wb = XLSX.read(bstr, { type: "binary" });
       setWorkspace(wb);
       setFileName(fileObj.name);
-      console.log("evt-----", fileObj.name);
       setImportDocumentOpen(true);
     };
     reader.readAsBinaryString(fileObj);

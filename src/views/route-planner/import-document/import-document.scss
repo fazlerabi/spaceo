@@ -100,12 +100,14 @@
   .c-pop-over {
     width: fit-content;
 
-    a {
-      width: fit-content;
-      display: flex;
-
-      h5 {
+    .card-header {
+      & > a {
         width: fit-content;
+        display: flex;
+
+        h5 {
+          width: fit-content;
+        }
       }
     }
 
