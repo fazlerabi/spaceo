@@ -22,7 +22,7 @@ function Dropdown(props) {
 
   return (
     <CDropdown className="w-100 btn-group rounded-0">
-      <CDropdownToggle className="rounded-0">
+      <CDropdownToggle className="rounded-0 py-1">
         {selectedItems[selectedItem]}
       </CDropdownToggle>
       <CDropdownMenu>

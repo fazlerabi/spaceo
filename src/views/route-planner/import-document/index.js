@@ -202,118 +202,135 @@ function ImportDocument(props) {
         </CModalTitle>
       </CModalHeader>
       <CModalBody>
-        <CRow>
-          <CCol className="d-flex" md="6">
-            <CFormGroup className="d-flex mb-0 select-sheet">
-              <CLabel htmlFor="sheet">Select a sheet</CLabel>
-              <CSelect custom name="sheet" id="sheet" onChange={onChangeSheet}>
-                {wb &&
-                  wb.SheetNames.map((s, index) => {
-                    return (
-                      <option value={s} key={`option__${index}`}>
-                        {s}
-                      </option>
-                    );
-                  })}
-              </CSelect>
-              <p className="mb-0 ml-2">{rows.length} rows</p>
-            </CFormGroup>
-          </CCol>
-          <CCol
-            md="6"
-            className="d-flex justify-content-end align-items-end pb-2"
-          >
-            <CFormGroup variant="custom-checkbox" inline>
-              <CInputCheckbox
-                custom
-                id="ignore-row"
-                name="ignore_row"
-                checked={ignoreRow}
-                onChange={(e) => {
-                  setIgnoreRow(e.target.checked);
-                }}
-              />
-              <CLabel variant="custom-checkbox" htmlFor="ignore-row">
-                Ignore first row
-              </CLabel>
-            </CFormGroup>
-            <CFormGroup variant="custom-checkbox" inline>
-              <CInputCheckbox
-                custom
-                id="append-to-current-list"
-                name="append_to_current_list"
-                checked={appendToCurrentList}
-                onChange={(e) => {
-                  setAppendToCurrentList(e.target.checked);
-                }}
-              />
-              <CLabel
-                variant="custom-checkbox"
-                htmlFor="append-to-current-list"
-              >
-                Append to curent list
-              </CLabel>
-            </CFormGroup>
-          </CCol>
-        </CRow>
-        <CRow className="mb-3">
-          <CCol md="12" className="d-flex justify-content-end">
-            <CFormGroup variant="custom-checkbox" inline>
-              <CInputCheckbox
-                custom
-                id="first-as-start-address"
-                name="first_as_start_address"
-                checked={firstAsStartAddress}
-                onChange={(e) => {
-                  setFirstAsStartAddress(e.target.checked);
-                }}
-              />
-              <CLabel
-                variant="custom-checkbox"
-                htmlFor="first-as-start-address"
-              >
-                Set first as start address
-              </CLabel>
-            </CFormGroup>
-            <CFormGroup variant="custom-checkbox" inline>
-              <CInputCheckbox
-                custom
-                id="last-as-end-address"
-                name="last_as_end_address"
-                checked={lastAsEndAddress}
-                onChange={(e) => {
-                  setLastAsEndAddress(e.target.checked);
-                }}
-              />
-              <CLabel variant="custom-checkbox" htmlFor="last-as-end-address">
-                Set last as end address
-              </CLabel>
-            </CFormGroup>
-            <CFormGroup variant="custom-checkbox" inline>
-              <CInputCheckbox
-                custom
-                id="return-to-start-address"
-                name="return_to_end_address"
-                checked={returnToStartAddress}
-                onChange={(e) => {
-                  setReturnToStartAddress(e.target.checked);
-                }}
-              />
-              <CLabel
-                variant="custom-checkbox"
-                htmlFor="return-to-start-address"
-              >
-                Return to start address
-              </CLabel>
-            </CFormGroup>
-          </CCol>
-        </CRow>
+        <CCard className="shadow mb-3">
+          <CCardBody className="py-2">
+            <CRow>
+              <CCol className="d-flex align-items-center" md="12">
+                <CFormGroup className="d-flex mb-0 select-sheet mr-5">
+                  <CLabel htmlFor="sheet" className="font-weight-bold">
+                    Select a sheet
+                  </CLabel>
+                  <CSelect
+                    custom
+                    name="sheet"
+                    id="sheet"
+                    onChange={onChangeSheet}
+                  >
+                    {wb &&
+                      wb.SheetNames.map((s, index) => {
+                        return (
+                          <option value={s} key={`option__${index}`}>
+                            {s}
+                          </option>
+                        );
+                      })}
+                  </CSelect>
+                  <p className="mb-0 ml-2">{rows.length} rows</p>
+                </CFormGroup>
+                <CFormGroup variant="custom-checkbox" inline>
+                  <CInputCheckbox
+                    custom
+                    id="ignore-row"
+                    name="ignore_row"
+                    checked={ignoreRow}
+                    onChange={(e) => {
+                      setIgnoreRow(e.target.checked);
+                    }}
+                  />
+                  <CLabel variant="custom-checkbox" htmlFor="ignore-row">
+                    Ignore first row
+                  </CLabel>
+                </CFormGroup>
+                <CFormGroup variant="custom-checkbox" inline>
+                  <CInputCheckbox
+                    custom
+                    id="append-to-current-list"
+                    name="append_to_current_list"
+                    checked={appendToCurrentList}
+                    onChange={(e) => {
+                      setAppendToCurrentList(e.target.checked);
+                    }}
+                  />
+                  <CLabel
+                    variant="custom-checkbox"
+                    htmlFor="append-to-current-list"
+                  >
+                    Append to curent list
+                  </CLabel>
+                </CFormGroup>
+              </CCol>
+            </CRow>
+          </CCardBody>
+        </CCard>
+        <CCard className="shadow mb-3">
+          <CCardBody className="py-2">
+            <CRow>
+              <CCol md="12" className="d-flex justify-content-start">
+                <span className="mr-5 font-weight-bold">
+                  Start / End addresses
+                </span>
+                <CFormGroup variant="custom-checkbox" inline>
+                  <CInputCheckbox
+                    custom
+                    id="first-as-start-address"
+                    name="first_as_start_address"
+                    checked={firstAsStartAddress}
+                    onChange={(e) => {
+                      setFirstAsStartAddress(e.target.checked);
+                    }}
+                  />
+                  <CLabel
+                    variant="custom-checkbox"
+                    htmlFor="first-as-start-address"
+                  >
+                    Set first as start address
+                  </CLabel>
+                </CFormGroup>
+                <CFormGroup variant="custom-checkbox" inline>
+                  <CInputCheckbox
+                    custom
+                    id="last-as-end-address"
+                    name="last_as_end_address"
+                    checked={lastAsEndAddress}
+                    onChange={(e) => {
+                      setLastAsEndAddress(e.target.checked);
+                    }}
+                  />
+                  <CLabel
+                    variant="custom-checkbox"
+                    htmlFor="last-as-end-address"
+                  >
+                    Set last as end address
+                  </CLabel>
+                </CFormGroup>
+                <CFormGroup variant="custom-checkbox" inline>
+                  <CInputCheckbox
+                    custom
+                    id="return-to-start-address"
+                    name="return_to_end_address"
+                    checked={returnToStartAddress}
+                    onChange={(e) => {
+                      setReturnToStartAddress(e.target.checked);
+                    }}
+                  />
+                  <CLabel
+                    variant="custom-checkbox"
+                    htmlFor="return-to-start-address"
+                  >
+                    Return to start address
+                  </CLabel>
+                </CFormGroup>
+              </CCol>
+            </CRow>
+          </CCardBody>
+        </CCard>
         <CRow className="mb-3">
           <CCol className="c-pop-over">
-            <CCard className="shadow">
+            <CCard className="shadow mb-0">
               <CCardHeader>
                 <CPopover
                   boundary="scrollParent"
+                  placement="right"
                   content={
                     <>
                       <CRow>
@@ -355,14 +372,14 @@ function ImportDocument(props) {
                   interactive={true}
                 >
                   <CLink>
-                    <h5 className="m-0 p-0">
+                    <h6 className="m-0 p-0">
                       Pick the correct option, above each column:
-                    </h5>
+                    </h6>
                   </CLink>
                 </CPopover>
               </CCardHeader>
-              <CCardBody>
-                <table className="table table-bordered table-striped pre-render-table">
+              <CCardBody className="py-2">
+                <table className="table table-bordered table-striped pre-render-table mb-0">
                   <thead>
                     <tr>
                       {rows &&
@@ -405,15 +422,15 @@ function ImportDocument(props) {
         </CRow>
         <CRow>
           <CCol>
-            <CCard className="shadow">
+            <CCard className="shadow mb-0">
               <CCardHeader>
                 <CLink>
-                  <h5 className="m-0 p-0">
+                  <h6 className="m-0 p-0">
                     Review the results preview and select import now.
-                  </h5>
+                  </h6>
                 </CLink>
               </CCardHeader>
-              <CCardBody>
+              <CCardBody className="py-2">
                 <table className="table table-bordered table-striped eliminated-table mb-0">
                   <thead>
                     <tr>
@@ -461,7 +478,7 @@ function ImportDocument(props) {
           </CCol>
         </CRow>
       </CModalBody>
-      <CModalFooter>
+      <CModalFooter className="py-1">
         <CButton color="primary" onClick={importNow}>
           Import Now
         </CButton>{" "}

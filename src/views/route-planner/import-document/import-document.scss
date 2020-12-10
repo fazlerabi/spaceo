@@ -37,10 +37,12 @@
 
     &.th-service-time {
       min-width: 100px;
+      width: 100px;
     }
 
     &.th-order-size {
       min-width: 100px;
+      width: 100px;
     }
   }
 
@@ -62,10 +64,12 @@
 
       &.td-service-time {
         min-width: 100px;
+        width: 100px;
       }
 
       &.td-order-size {
         min-width: 100px;
+        width: 100px;
       }
     }
   }
@@ -88,12 +92,18 @@
   }
 
   .select-sheet {
-    line-height: 36px;
+    line-height: 28px;
     white-space: nowrap;
 
     label {
       margin-bottom: 0;
       margin-right: 0.5rem;
+    }
+
+    select {
+      padding-top: 0;
+      padding-bottom: 0;
+      height: 28px;
     }
   }
 
