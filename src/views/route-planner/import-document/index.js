@@ -17,6 +17,7 @@ import {
   CCardBody,
   CPopover,
   CLink,
+  CBadge,
 } from "@coreui/react";
 import * as XLSX from "xlsx";
 import { GrDocumentUpload } from "react-icons/gr";
@@ -305,7 +306,7 @@ function ImportDocument(props) {
         </CRow>
         <CRow className="mb-3">
           <CCol className="c-pop-over">
-            <CCard>
+            <CCard className="shadow">
               <CCardHeader>
                 <CPopover
                   boundary="scrollParent"
@@ -395,7 +396,7 @@ function ImportDocument(props) {
         </CRow>
         <CRow>
           <CCol>
-            <CCard>
+            <CCard className="shadow">
               <CCardHeader>
                 <CLink>
                   <h5 className="m-0 p-0">
@@ -431,7 +432,9 @@ function ImportDocument(props) {
                     {resultRows.map((row) => {
                       return (
                         <tr>
-                          <td className="td-type">{row["type"]}</td>
+                          <td className="td-type">
+                            <CBadge color="primary">{row["type"]}</CBadge>
+                          </td>
                           <td className="td-title">{row["title"]}</td>
                           <td className="td-address">{row["address"]}</td>
                           <td className="td-service-time">
