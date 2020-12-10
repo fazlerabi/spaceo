@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   CModal,
   CModalBody,
@@ -12,34 +12,46 @@ import {
   CLabel,
   CSelect,
   CInputCheckbox,
-  CCollapse,
+  CCard,
+  CCardHeader,
+  CCardBody,
+  CPopover,
+  CLink,
 } from "@coreui/react";
+import * as XLSX from "xlsx";
 import { GrDocumentUpload } from "react-icons/gr";
 import _ from "lodash";
 import Dropdown from "./dropdown";
 import "./import-document.scss";
 
-const dropdownItems = [
-  "Ignore",
-  "Title",
-  "Address",
-  "Service Time",
-  "Order Size",
-  "Territory",
-  "Filter-In",
-  "Filter-Out",
-  "Comments",
-];
+function deepCompareEquals(a, b) {
+  return _.isEqual(a, b);
+}
+
+function useDeepCompareMemoize(value) {
+  const ref = useRef();
+
+  if (!deepCompareEquals(value, ref.current)) {
+    ref.current = value;
+  }
+
+  return ref.current;
+}
+
+function useDeepCompareEffect(callback, dependencies) {
+  useEffect(callback, dependencies.map(useDeepCompareMemoize));
+}
 
 function ImportDocument(props) {
-  const { open, setOpen, rows = null, sheet = [], setAddress } = props;
-  const [accordion, setAccordion] = useState(1);
+  const { open, setOpen, setAddress, wb, fileName } = props;
   const [ignoreRow, setIgnoreRow] = useState(true);
   const [appendToCurrentList, setAppendToCurrentList] = useState(false);
   const [firstAsStartAddress, setFirstAsStartAddress] = useState(true);
   const [lastAsEndAddress, setLastAsEndAddress] = useState(false);
   const [returnToStartAddress, setReturnToStartAddress] = useState(true);
   const [generatedRows, setGeneratedRows] = useState([]);
+  const [rows, setRows] = useState([]);
+  const [selectedSheet, setSelectedSheet] = useState(null);
   const [selectedItems, setSelectedItems] = useState([]);
 
   const headers = (rows && rows.length && Object.keys(rows[0])) || [];
@@ -51,9 +63,31 @@ function ImportDocument(props) {
     setSelectedItems(selItems);
   };
 
+  const onChangeSheet = (event) => {
+    setSelectedSheet(event.target.value);
+  };
+
   useEffect(() => {
+    if (open && wb) {
+      const wsname = selectedSheet || wb.SheetNames[0];
+      const ws = wb.Sheets[wsname];
+      const data = XLSX.utils.sheet_to_json(ws, { raw: true, defval: null });
+      const obj = {};
+
+      if (data && data.length) {
+        Object.keys(data[0]).map((key) => {
+          obj[key] = key;
+        });
+        setRows([obj, ...data]);
+      } else {
+        setRows(data);
+      }
+    }
+  }, [open, selectedSheet]);
+
+  useDeepCompareEffect(() => {
     let newRows = [];
-    generatedRows.map((row, i) => {
+    rows.map((row, i) => {
       const obj = {};
       selectedItems.map((item, j) => {
         if (item === 1)
@@ -78,10 +112,9 @@ function ImportDocument(props) {
       newRows.push(obj);
     });
     setGeneratedRows(newRows);
-  }, [selectedItems]);
+  }, [rows]);
 
-  useEffect(() => {
-    setGeneratedRows([...rows]);
+  useDeepCompareEffect(() => {
     if (rows && rows.length) {
       const selItems = headers.map((key, index) => {
         const results = rows.map((row) => {
@@ -155,30 +188,35 @@ function ImportDocument(props) {
       className="import-document"
       show={open}
       onClose={() => setOpen(!open)}
-      size="lg"
+      size="xl"
       centered
     >
-      <CModalHeader closeButton>
+      <CModalHeader closeButton className="py-2">
         <CModalTitle className="d-flex align-items-center">
           <GrDocumentUpload className="my-auto mr-2 h4" />
-          Import Document
+          Import Document:&nbsp;
+          <span className="text-primary">
+            <b>{fileName}</b>
+          </span>
         </CModalTitle>
       </CModalHeader>
       <CModalBody>
         <CRow>
-          <CCol md="4">
-            <CFormGroup>
+          <CCol className="d-flex" md="6">
+            <CFormGroup className="d-flex mb-0 select-sheet">
               <CLabel htmlFor="sheet">Select a sheet</CLabel>
-              <CSelect custom name="sheet" id="sheet">
-                {sheet.map((s) => {
-                  return <option value={s}>{s}</option>;
-                })}
+              <CSelect custom name="sheet" id="sheet" onChange={onChangeSheet}>
+                {wb &&
+                  wb.SheetNames.map((s) => {
+                    return <option value={s}>{s}</option>;
+                  })}
               </CSelect>
+              <p className="mb-0 ml-2">{rows.length} rows</p>
             </CFormGroup>
           </CCol>
           <CCol
-            md="8"
-            className="d-flex justify-content-end align-items-end pb-3"
+            md="6"
+            className="d-flex justify-content-end align-items-end pb-2"
           >
             <CFormGroup variant="custom-checkbox" inline>
               <CInputCheckbox
@@ -266,127 +304,148 @@ function ImportDocument(props) {
           </CCol>
         </CRow>
         <CRow className="mb-3">
-          <CCol>
-            <CButton
-              block
-              color="link"
-              className="text-left m-0 p-0"
-              onClick={() => setAccordion(accordion === 0 ? null : 0)}
-            >
-              <h5 className="m-0 p-0">
-                Pick the correct option, above each column:
-              </h5>
-            </CButton>
-            <CCollapse show={accordion === 0}>
-              <CRow>
-                <CCol md="6">
-                  Address - House#, Street, City, Zip code, State etc.
-                </CCol>
-                <CCol md="6">
-                  Ignore - Irrelevant info that will be excluded (like fax #).
-                </CCol>
-              </CRow>
-              <CRow>
-                <CCol md="6">
-                  Title - Customer name, Store name, Notes etc.
-                </CCol>
-                <CCol md="6">
-                  Filter-in/out - Rows with values will be included/excluded.
-                </CCol>
-              </CRow>
-              <CRow>
-                <CCol md="6">
-                  Territory - Values that define geographical area grouping.
-                </CCol>
-                <CCol md="6">
-                  Comments - Instructions or other information.
-                </CCol>
-              </CRow>
-              <CRow>
-                <CCol md="6">
-                  Service Time - Pause at a specific location (in minutes).
-                </CCol>
-              </CRow>
-            </CCollapse>
-          </CCol>
-        </CRow>
-        <CRow className="mb-3">
-          <CCol>
-            <table className="table table-bordered pre-render-table">
-              <thead>
-                <tr>
-                  {rows &&
-                    rows.length &&
-                    Object.keys(rows[0]).map((item, index) => {
-                      if (item !== "type")
-                        return (
-                          <th scope="col" className="p-0">
-                            <Dropdown
-                              selectedItem={selectedItems[index]}
-                              setDropdownType={(type) =>
-                                setDropdownType(index, type)
-                              }
-                            />
-                          </th>
-                        );
-                    })}
-                </tr>
-              </thead>
-              <tbody>
-                {rows.map((row) => {
-                  return (
+          <CCol className="c-pop-over">
+            <CCard>
+              <CCardHeader>
+                <CPopover
+                  boundary="scrollParent"
+                  content={
+                    <>
+                      <CRow>
+                        <CCol className="d-flex" md="6">
+                          <a href="#">Address</a> - House#, Street, City, Zip
+                          code, State etc.
+                        </CCol>
+                        <CCol md="6">
+                          Ignore - Irrelevant info that will be excluded (like
+                          fax #).
+                        </CCol>
+                      </CRow>
+                      <CRow>
+                        <CCol md="6">
+                          Title - Customer name, Store name, Notes etc.
+                        </CCol>
+                        <CCol className="d-flex" md="6">
+                          <a href="#">Filter-in/out</a> - Rows with values will
+                          be included/excluded.
+                        </CCol>
+                      </CRow>
+                      <CRow>
+                        <CCol className="d-flex" md="6">
+                          <a href="#">Territory</a> - Values that define
+                          geographical area grouping.
+                        </CCol>
+                        <CCol md="6">
+                          Comments - Instructions or other information.
+                        </CCol>
+                      </CRow>
+                      <CRow>
+                        <CCol md="6">
+                          Service Time - Pause at a specific location (in
+                          minutes).
+                        </CCol>
+                      </CRow>
+                    </>
+                  }
+                  interactive={true}
+                >
+                  <CLink>
+                    <h5 className="m-0 p-0">
+                      Pick the correct option, above each column:
+                    </h5>
+                  </CLink>
+                </CPopover>
+              </CCardHeader>
+              <CCardBody>
+                <table className="table table-bordered pre-render-table">
+                  <thead>
                     <tr>
-                      {Object.keys(row).map((cell) => {
-                        if (cell !== "type") return <td>{row[cell]}</td>;
-                      })}
+                      {rows &&
+                        rows.length &&
+                        Object.keys(rows[0]).map((item, index) => {
+                          if (item !== "type")
+                            return (
+                              <th scope="col" className="p-0">
+                                <Dropdown
+                                  selectedItem={selectedItems[index]}
+                                  setDropdownType={(type) =>
+                                    setDropdownType(index, type)
+                                  }
+                                />
+                              </th>
+                            );
+                        })}
                     </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+                  </thead>
+                  <tbody>
+                    {rows.map((row) => {
+                      return (
+                        <tr>
+                          {Object.keys(row).map((cell) => {
+                            if (cell !== "type") return <td>{row[cell]}</td>;
+                          })}
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </CCardBody>
+            </CCard>
           </CCol>
         </CRow>
         <CRow>
           <CCol>
-            <p>Review the results preview and select import now.</p>
-            <table className="table table-bordered table-light eliminated-table">
-              <thead>
-                <tr>
-                  <th className="th-type" scope="col">
-                    Type
-                  </th>
-                  <th className="th-title" scope="col">
-                    Title
-                  </th>
-                  <th className="th-address" scope="col">
-                    Address
-                  </th>
-                  <th className="th-service-time" scope="col">
-                    Service time
-                  </th>
-                  <th className="th-order-size" scope="col">
-                    Order Size
-                  </th>
-                  <th className="th-territory" scope="col">
-                    Territory
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {resultRows.map((row) => {
-                  return (
+            <CCard>
+              <CCardHeader>
+                <CLink>
+                  <h5 className="m-0 p-0">
+                    Review the results preview and select import now.
+                  </h5>
+                </CLink>
+              </CCardHeader>
+              <CCardBody>
+                <table className="table table-bordered table-light eliminated-table mb-0">
+                  <thead>
                     <tr>
-                      <td className="td-type">{row["type"]}</td>
-                      <td className="td-title">{row["title"]}</td>
-                      <td className="td-address">{row["address"]}</td>
-                      <td className="td-service-time">{row["service_time"]}</td>
-                      <td className="td-order-size">{row["order_size"]}</td>
-                      <td className="td-territory">{row["territory"]}</td>
+                      <th className="th-type" scope="col">
+                        Type
+                      </th>
+                      <th className="th-title" scope="col">
+                        Title
+                      </th>
+                      <th className="th-address" scope="col">
+                        Address
+                      </th>
+                      <th className="th-service-time" scope="col">
+                        Service time
+                      </th>
+                      <th className="th-order-size" scope="col">
+                        Order Size
+                      </th>
+                      <th className="th-territory" scope="col">
+                        Territory
+                      </th>
                     </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+                  </thead>
+                  <tbody>
+                    {resultRows.map((row) => {
+                      return (
+                        <tr>
+                          <td className="td-type">{row["type"]}</td>
+                          <td className="td-title">{row["title"]}</td>
+                          <td className="td-address">{row["address"]}</td>
+                          <td className="td-service-time">
+                            {row["service_time"]}
+                          </td>
+                          <td className="td-order-size">{row["order_size"]}</td>
+                          <td className="td-territory">{row["territory"]}</td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </CCardBody>
+            </CCard>
           </CCol>
         </CRow>
       </CModalBody>

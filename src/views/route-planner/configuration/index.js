@@ -43,12 +43,12 @@ function Configuration() {
   const [active, setActive] = useState(0);
   const [endAddress, setEndAddress] = useState(false);
   const [stopOpen, setStopOpen] = useState(false);
-  const [sheet, setSheet] = useState([]);
-  const [xlsx, setXLSX] = useState([]);
+  const [workspace, setWorkspace] = useState(null);
   const [importDocumentOpen, setImportDocumentOpen] = useState(false);
   const [progressBarOpen, setProgressBarOpen] = useState(false);
   const [addressLength, setAddressLength] = useState(0);
   const [importedAddresses, setImportedAddresses] = useState([]);
+  const [fileName, setFileName] = useState(null);
   const inputRef = useRef(null);
 
   const increment = () => {
@@ -65,20 +65,9 @@ function Configuration() {
     reader.onload = (evt) => {
       const bstr = evt.target.result;
       const wb = XLSX.read(bstr, { type: "binary" });
-      const wsname = wb.SheetNames[0];
-      setSheet(wb.SheetNames);
-      const ws = wb.Sheets[wsname];
-      const data = XLSX.utils.sheet_to_json(ws, { raw: true, defval: null });
-      const obj = {};
-
-      if (data && data.length) {
-        Object.keys(data[0]).map((key) => {
-          obj[key] = key;
-        });
-        setXLSX([obj, ...data]);
-      } else {
-        setXLSX(data);
-      }
+      setWorkspace(wb);
+      setFileName(fileObj.name);
+      console.log("evt-----", fileObj.name);
       setImportDocumentOpen(true);
     };
     reader.readAsBinaryString(fileObj);
@@ -246,6 +235,9 @@ function Configuration() {
                             </td>
                           );
                         },
+                        title: (item) => {
+                          return <td>{item.title || ""}</td>;
+                        },
                         service_time: (item) => {
                           return <td>{item.service_time || ""}</td>;
                         },
@@ -383,8 +375,8 @@ function Configuration() {
         open={importDocumentOpen}
         setOpen={setImportDocumentOpen}
         setAddress={setAddress}
-        sheet={sheet}
-        rows={xlsx}
+        wb={workspace}
+        fileName={fileName}
       />
     </>
   );

@@ -86,4 +86,43 @@
       width: fit-content;
     }
   }
+
+  .select-sheet {
+    line-height: 36px;
+    white-space: nowrap;
+
+    label {
+      margin-bottom: 0;
+      margin-right: 0.5rem;
+    }
+  }
+
+  .c-pop-over {
+    width: fit-content;
+
+    a {
+      width: fit-content;
+      display: flex;
+
+      h5 {
+        width: fit-content;
+      }
+    }
+
+    & > .card > .card-header > div {
+      width: 780px;
+    }
+
+    .tippy-box {
+      max-width: 1000px !important;
+      .tippy-content {
+        max-width: inherit;
+
+        .col-md-6 {
+          white-space: nowrap;
+          font-size: 14px;
+        }
+      }
+    }
+  }
 }
