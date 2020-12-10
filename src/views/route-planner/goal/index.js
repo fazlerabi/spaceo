@@ -136,7 +136,7 @@ function Goal(props) {
                         </h6>
                       </CCol>
                     </CFormGroup>
-                    <CFormGroup row>
+                    <CFormGroup row className="mb-0">
                       <CCol xs="12" md="12">
                         <h6>
                           <BsDash />
@@ -199,7 +199,7 @@ function Goal(props) {
                         </h6>
                       </CCol>
                     </CFormGroup>
-                    <CFormGroup row>
+                    <CFormGroup row className="mb-0">
                       <CCol xs="12" md="12">
                         <h6>
                           <BsDash />
@@ -253,7 +253,7 @@ function Goal(props) {
                         </h6>
                       </CCol>
                     </CFormGroup>
-                    <CFormGroup row>
+                    <CFormGroup row className="mb-0">
                       <CCol xs="12" md="12">
                         <h6>
                           <BsDash />
@@ -318,7 +318,7 @@ function Goal(props) {
                         </div>
                       </CFormGroup>
                     </div>
-                    <div className="d-flex x-100">
+                    <div className="d-flex x-100 travel-mode">
                       <h6>
                         <BsDash />
                         &nbsp;Travel Mode:

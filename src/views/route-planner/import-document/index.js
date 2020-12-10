@@ -378,7 +378,7 @@ function ImportDocument(props) {
                   </CLink>
                 </CPopover>
               </CCardHeader>
-              <CCardBody className="py-2">
+              <CCardBody className="py-3">
                 <table className="table table-bordered table-striped pre-render-table mb-0">
                   <thead>
                     <tr>
@@ -430,7 +430,7 @@ function ImportDocument(props) {
                   </h6>
                 </CLink>
               </CCardHeader>
-              <CCardBody className="py-2">
+              <CCardBody className="py-3">
                 <table className="table table-bordered table-striped eliminated-table mb-0">
                   <thead>
                     <tr>
