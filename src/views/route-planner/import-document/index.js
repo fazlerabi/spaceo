@@ -24,6 +24,15 @@ import { GrDocumentUpload } from "react-icons/gr";
 import _ from "lodash";
 import Dropdown from "./dropdown";
 import "./import-document.scss";
+import {
+  validateMatchCity,
+  validateMatchCountry,
+  validateMatchFullName,
+  validateMatchRegion,
+  validateMatchStreetLine,
+  validateMatchZipCode,
+  validateMatchStreetLine2,
+} from "src/utils";
 
 function deepCompareEquals(a, b) {
   return _.isEqual(a, b);
@@ -113,7 +122,7 @@ function ImportDocument(props) {
       newRows.push(obj);
     });
     setGeneratedRows(newRows);
-  }, [rows]);
+  }, [rows, selectedItems]);
 
   useDeepCompareEffect(() => {
     if (rows && rows.length) {
@@ -136,9 +145,17 @@ function ImportDocument(props) {
         const activeCount = count["true"] || 0;
         const inactiveCount = count["false"] || 0;
 
-        if (activeCount > inactiveCount) {
+        if (
+          validateMatchRegion(key) ||
+          validateMatchZipCode(key) ||
+          validateMatchCity(key) ||
+          validateMatchCountry(key) ||
+          validateMatchStreetLine(key) ||
+          validateMatchStreetLine2(key) ||
+          activeCount > inactiveCount
+        ) {
           return 2;
-        } else if (titleCounts["true"] > titleCounts["false"]) {
+        } else if (validateMatchFullName(key)) {
           return 1;
         } else {
           return 0;
