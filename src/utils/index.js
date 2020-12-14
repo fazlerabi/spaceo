@@ -87,3 +87,11 @@ export const validateMatchFullName = (headerName) => {
 export const validateMatchPhoneNumber = (headerName) => {
   return ["phone #", "phone", "cell"].includes(_.toLower(_.trim(headerName)));
 };
+
+export const validateNumber = (cell) => {
+  return !isNaN(cell);
+};
+
+export const validateTime = (cell) => {
+  return /^\d{1,2}:\d{2}([ap]m)?$/.test(cell);
+};

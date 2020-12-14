@@ -32,6 +32,8 @@ import {
   validateMatchStreetLine,
   validateMatchZipCode,
   validateMatchStreetLine2,
+  validateNumber,
+  validateTime,
 } from "src/utils";
 
 function deepCompareEquals(a, b) {
@@ -50,6 +52,16 @@ function useDeepCompareMemoize(value) {
 
 function useDeepCompareEffect(callback, dependencies) {
   useEffect(callback, dependencies.map(useDeepCompareMemoize));
+}
+
+function checkRightAlign(rows, cell) {
+  let checked = 0;
+  rows.map((row) => {
+    if (validateTime(row[cell]) || validateNumber(row[cell])) checked++;
+  });
+
+  if (checked >= rows.length / 2) return true;
+  else return false;
 }
 
 function ImportDocument(props) {
@@ -426,7 +438,18 @@ function ImportDocument(props) {
                         <tr key={`table-row-${index}`}>
                           {Object.keys(row).map((cell, i) => {
                             if (cell !== "type")
-                              return <td key={`cell--${i}`}>{row[cell]}</td>;
+                              return (
+                                <td
+                                  key={`cell--${i}`}
+                                  className={
+                                    checkRightAlign(rows, cell)
+                                      ? "text-right"
+                                      : ""
+                                  }
+                                >
+                                  {row[cell]}
+                                </td>
+                              );
                           })}
                         </tr>
                       );
