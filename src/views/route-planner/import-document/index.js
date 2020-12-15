@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import {
   CModal,
   CModalBody,
@@ -35,24 +35,7 @@ import {
   validateNumber,
   validateTime,
 } from "src/utils";
-
-function deepCompareEquals(a, b) {
-  return _.isEqual(a, b);
-}
-
-function useDeepCompareMemoize(value) {
-  const ref = useRef();
-
-  if (!deepCompareEquals(value, ref.current)) {
-    ref.current = value;
-  }
-
-  return ref.current;
-}
-
-function useDeepCompareEffect(callback, dependencies) {
-  useEffect(callback, dependencies.map(useDeepCompareMemoize));
-}
+import { useDeepCompareEffect } from "src/utils/customHook.js";
 
 function checkRightAlign(rows, cell) {
   let checked = 0;

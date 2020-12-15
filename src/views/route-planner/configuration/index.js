@@ -29,19 +29,37 @@ import {
   CProgress,
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
+import _ from "lodash";
 import * as XLSX from "xlsx";
 import { FaPlus, FaAddressBook, FaRoute } from "react-icons/fa";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import AddressForm from "../../forms/address-form";
 import ImportDocumentModal from "../import-document";
 import Goal from "../goal";
 import { validateAddress } from "../../../utils/index";
 import "./configuration.scss";
+import { useDeepCompareEffect } from "src/utils/customHook";
+
+const fields = [
+  "type",
+  { key: "title", _style: { width: "20%" } },
+  "address",
+  { key: "service_time", _style: { width: "10%" } },
+  { key: "order_size", _style: { width: "10%" } },
+  {
+    key: "show_details",
+    label: "",
+    _style: { width: "1%" },
+    sorter: false,
+    filter: false,
+  },
+];
 
 function Configuration() {
   const [progress, setProgress] = useState(0);
   const [percent, setPercent] = useState(0);
   const [active, setActive] = useState(0);
-  const [endAddress, setEndAddress] = useState(false);
+  const [endAddressToggle, setEndAddressToggle] = useState(false);
   const [stopOpen, setStopOpen] = useState(false);
   const [workspace, setWorkspace] = useState(null);
   const [importDocumentOpen, setImportDocumentOpen] = useState(false);
@@ -56,7 +74,7 @@ function Configuration() {
   };
 
   const toggleEndAddress = () => {
-    setEndAddress(!endAddress);
+    setEndAddressToggle(!endAddressToggle);
   };
 
   const fileHandler = (event) => {
@@ -104,20 +122,14 @@ function Configuration() {
     inputRef.current.click();
   };
 
-  const fields = [
-    "type",
-    { key: "title", _style: { width: "20%" } },
-    "address",
-    { key: "service_time", _style: { width: "10%" } },
-    { key: "order_size", _style: { width: "10%" } },
-    {
-      key: "show_details",
-      label: "",
-      _style: { width: "1%" },
-      sorter: false,
-      filter: false,
-    },
-  ];
+  const startAddress = importedAddresses.filter((a) => a.type === "H");
+  const endAddress = importedAddresses.filter((a) => a.type === "E");
+
+  useDeepCompareEffect(() => {
+    if (!_.isEmpty(endAddress)) {
+      setEndAddressToggle(true);
+    }
+  }, [endAddress]);
 
   return (
     <>
@@ -127,7 +139,24 @@ function Configuration() {
         className="d-none"
         ref={inputRef}
       />
-      <CCard className="h-100 shadow-sm">
+      {!!importedAddresses.length && (
+        <CCard className="shadow-sm imported-info">
+          <CCardBody className="d-flex align-items-center">
+            <p className="mb-0 mr-4">
+              Total: {importedAddresses.length} Addresses
+            </p>
+            <CBadge color="success" size="lg" className="mr-3">
+              <AiOutlineEye />{" "}
+              {importedAddresses.filter((a) => a.verified).length} Verified
+            </CBadge>
+            <CBadge color="danger" size="lg" className="mr-3">
+              <AiOutlineEyeInvisible />{" "}
+              {importedAddresses.filter((a) => !a.verified).length} Un-verified
+            </CBadge>
+          </CCardBody>
+        </CCard>
+      )}
+      <CCard className="h-100 shadow-sm mb-0">
         <CCardBody>
           <CTabs
             activeTab={active}
@@ -172,7 +201,11 @@ function Configuration() {
                 <CCard className="mt-3 mx-3 shadow">
                   <CCardBody>
                     <div className="address-forms container-fluid">
-                      <AddressForm withLabel={true} index="H" />
+                      <AddressForm
+                        withLabel={true}
+                        index="H"
+                        value={_.get(startAddress, "0", {})}
+                      />
                       <CFormGroup row className="mb-2">
                         <CCol md="1"></CCol>
                         <CCol md="9" className="px-0">
@@ -184,6 +217,7 @@ function Configuration() {
                               name="set-endaddress"
                               value="end-address"
                               onChange={toggleEndAddress}
+                              checked={endAddressToggle}
                             />
                             <CLabel
                               variant="custom-checkbox"
@@ -194,8 +228,12 @@ function Configuration() {
                           </CFormGroup>
                         </CCol>
                       </CFormGroup>
-                      {endAddress && (
-                        <AddressForm withLabel={false} index="E" />
+                      {endAddressToggle && (
+                        <AddressForm
+                          withLabel={false}
+                          index="E"
+                          value={_.get(endAddress, "0", {})}
+                        />
                       )}
                     </div>
                   </CCardBody>
@@ -203,7 +241,10 @@ function Configuration() {
                 <CCard className="mx-3 address-table-card shadow">
                   <CCardBody className="data-table">
                     <CDataTable
-                      items={importedAddresses}
+                      items={importedAddresses.filter(
+                        (address) =>
+                          address.type !== "H" && address.type !== "E"
+                      )}
                       fields={fields}
                       tableFilter
                       itemsPerPage={10}
@@ -351,7 +392,7 @@ function Configuration() {
       <CModal
         show={progressBarOpen}
         onClose={() => setProgressBarOpen(false)}
-        size="md"
+        size="sm"
       >
         <CModalHeader closeButton>
           <CModalTitle>Processing...</CModalTitle>

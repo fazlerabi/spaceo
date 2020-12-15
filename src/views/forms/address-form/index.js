@@ -17,8 +17,6 @@ import "./address-form.scss";
 const validationSchema = function (values) {
   return Yup.object().shape({
     address: Yup.string().required("Required"),
-    serviceTime: Yup.string().required("Required"),
-    orderSize: Yup.string().required("Required"),
   });
 };
 
@@ -44,11 +42,6 @@ const getErrorsFromValidationError = (validationError) => {
   }, {});
 };
 
-const initialValues = {
-  title: "",
-  address: "",
-};
-
 const onSubmit = (values, { setSubmitting, setErrors }) => {
   setTimeout(() => {
     alert(JSON.stringify(values, null, 2));
@@ -57,12 +50,19 @@ const onSubmit = (values, { setSubmitting, setErrors }) => {
 };
 
 const AddressForm = (props) => {
-  const { withLabel, index } = props;
+  const { withLabel, index, value } = props;
+
+  const initialValues = {
+    title: value.title || "",
+    address: value.address || "",
+  };
+
   return (
     <Formik
       initialValues={initialValues}
       validate={validate(validationSchema)}
       onSubmit={onSubmit}
+      enableReinitialize
     >
       {({
         values,

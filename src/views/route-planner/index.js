@@ -1,6 +1,5 @@
 import React from "react";
 
-import { useSelector } from "react-redux";
 import { CRow, CCol } from "@coreui/react";
 import MapComponent from "./google-map";
 import Configuration from "./configuration";
@@ -12,10 +11,10 @@ const RoutePlanner = () => {
   return (
     <div className="route-planner-layout">
       <CRow className="h-100">
-        <CCol className="h-100" xs="12" md="6">
+        <CCol className="h-100 d-flex flex-column" xs="12" md="6">
           <Configuration />
         </CCol>
-        <CCol className="h-100" xs="12" md="6">
+        <CCol className="h-auto" xs="12" md="6">
           <MapComponent />
         </CCol>
       </CRow>

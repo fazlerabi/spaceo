@@ -2,7 +2,7 @@
 
 .route-planner-layout {
   width: 100%;
-  height: $layout-height;
+  height: calc(100% - 30px);
 
   .set-end-address {
     height: $toggle-height;
