@@ -98,8 +98,13 @@ function ImportDocument(props) {
         if (item === 1)
           obj["title"] = (obj["title"] || "") + rows[i][headers[j]] + " ";
 
-        if (item === 2)
-          obj["address"] = (obj["address"] || "") + rows[i][headers[j]] + " ";
+        if (item === 2 && rows[i][headers[j]]) {
+          if (obj["address"]) {
+            obj["address"] = obj["address"] + ", " + rows[i][headers[j]];
+          } else {
+            obj["address"] = rows[i][headers[j]];
+          }
+        }
 
         if (item === 3)
           obj["service_time"] =

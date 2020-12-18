@@ -32,7 +32,7 @@
     }
 
     &.th-address {
-      width: 400px !important;
+      width: 500px !important;
     }
 
     &.th-service-time {
@@ -41,6 +41,11 @@
     }
 
     &.th-order-size {
+      min-width: 100px;
+      width: 100px;
+    }
+
+    &.th-territory {
       min-width: 100px;
       width: 100px;
     }
@@ -59,7 +64,7 @@
       }
 
       &.td-address {
-        width: 400px !important;
+        width: 500px !important;
       }
 
       &.td-service-time {
@@ -68,6 +73,11 @@
       }
 
       &.td-order-size {
+        min-width: 100px;
+        width: 100px;
+      }
+
+      &.td-territory {
         min-width: 100px;
         width: 100px;
       }

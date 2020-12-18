@@ -37,9 +37,16 @@ export const validateAddress = async (address, index, func) => {
     }
   );
 
-  if (response.data.results.length === 0) return { [index]: false };
   func();
-  return { [index]: true };
+  if (response.data.results.length === 0) return { [index]: "unverified" };
+  else if (
+    response.data.results[0].types.includes("street_address") ||
+    (response.data.results[0].types.includes("precise") &&
+      response.data.results[0].partial_match !== true &&
+      response.data.results[0].geometry.location_type === "ROOFTOP")
+  )
+    return { [index]: "verified" };
+  else return { [index]: "unverified" };
 };
 
 export const validateMatchRegion = (headerName) => {

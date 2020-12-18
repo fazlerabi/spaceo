@@ -6,8 +6,13 @@
   border-style: solid;
   border-color: $gray;
   border-top: none;
-  overflow: auto;
+  overflow: hidden;
   background: $white;
+
+  .tab-pane.active {
+    display: flex;
+    flex-direction: column;
+  }
 
   table {
     td,
@@ -16,6 +21,11 @@
 
       &.verified {
         background: $success;
+      }
+
+      &.unverified {
+        background: $danger;
+        color: $white;
       }
     }
   }
@@ -36,5 +46,9 @@
         justify-content: flex-end !important;
       }
     }
+  }
+
+  .badge {
+    cursor: pointer;
   }
 }

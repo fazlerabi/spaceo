@@ -31,8 +31,12 @@ import {
 import CIcon from "@coreui/icons-react";
 import _ from "lodash";
 import * as XLSX from "xlsx";
-import { FaPlus, FaAddressBook, FaRoute } from "react-icons/fa";
-import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import { FaPlus, FaAddressBook, FaRoute, FaColumns } from "react-icons/fa";
+import {
+  AiOutlineEye,
+  AiOutlineEyeInvisible,
+  AiOutlineWarning,
+} from "react-icons/ai";
 import AddressForm from "../../forms/address-form";
 import ImportDocumentModal from "../import-document";
 import Goal from "../goal";
@@ -67,6 +71,9 @@ function Configuration() {
   const [addressLength, setAddressLength] = useState(0);
   const [importedAddresses, setImportedAddresses] = useState([]);
   const [fileName, setFileName] = useState(null);
+  const [viewVerified, setViewVerified] = useState(true);
+  const [viewUnverified, setViewUnverified] = useState(true);
+  const [confirmationModal, setConfirmationModal] = useState(false);
   const inputRef = useRef(null);
 
   const increment = () => {
@@ -139,23 +146,6 @@ function Configuration() {
         className="d-none"
         ref={inputRef}
       />
-      {!!importedAddresses.length && (
-        <CCard className="shadow-sm imported-info">
-          <CCardBody className="d-flex align-items-center">
-            <p className="mb-0 mr-4">
-              Total: {importedAddresses.length} Addresses
-            </p>
-            <CBadge color="success" size="lg" className="mr-3">
-              <AiOutlineEye />{" "}
-              {importedAddresses.filter((a) => a.verified).length} Verified
-            </CBadge>
-            <CBadge color="danger" size="lg" className="mr-3">
-              <AiOutlineEyeInvisible />{" "}
-              {importedAddresses.filter((a) => !a.verified).length} Un-verified
-            </CBadge>
-          </CCardBody>
-        </CCard>
-      )}
       <CCard className="h-100 shadow-sm mb-0">
         <CCardBody>
           <CTabs
@@ -198,7 +188,96 @@ function Configuration() {
             </CNav>
             <CTabContent className="configuration-content">
               <CTabPane>
-                <CCard className="mt-3 mx-3 shadow">
+                {!!importedAddresses.length && (
+                  <>
+                    <CCard className="mt-3 mx-3 mb-0">
+                      <CCardBody className="d-flex justify-content-end py-3">
+                        <CButton
+                          color="dark"
+                          variant="outline"
+                          size="sm"
+                          shape="pill"
+                          className="mr-3"
+                        >
+                          <CIcon name="cil-save" />
+                          &nbsp; Save/Export
+                        </CButton>
+                        <CButton
+                          color="dark"
+                          variant="outline"
+                          size="sm"
+                          shape="pill"
+                          className="mr-3"
+                          onClick={() => {
+                            setConfirmationModal(true);
+                          }}
+                        >
+                          <CIcon name="cil-lightbulb" />
+                          &nbsp; Clear
+                        </CButton>
+                        <CButton
+                          color="dark"
+                          variant="outline"
+                          size="sm"
+                          shape="pill"
+                        >
+                          <FaColumns className="c-icon" />
+                          &nbsp; Columns
+                        </CButton>
+                      </CCardBody>
+                    </CCard>
+                    <CCard className="shadow imported-info mt-3 mx-3 mb-0">
+                      <CCardBody className="d-flex align-items-center">
+                        <p className="mb-0 mr-4">
+                          Total: {importedAddresses.length} Addresses
+                        </p>
+                        <CBadge
+                          color="success"
+                          size="xl"
+                          className="mr-3 h6 mb-0"
+                          onClick={() => {
+                            setViewVerified(!viewVerified);
+                          }}
+                        >
+                          {viewVerified ? (
+                            <AiOutlineEye />
+                          ) : (
+                            <AiOutlineEyeInvisible />
+                          )}
+                          &nbsp;
+                          {
+                            importedAddresses.filter(
+                              (a) => a.verified === "verified"
+                            ).length
+                          }
+                          &nbsp; Verified
+                        </CBadge>
+                        <CBadge
+                          color="danger"
+                          size="xl"
+                          className="mr-3 h6 mb-0"
+                          onClick={() => {
+                            setViewUnverified(!viewUnverified);
+                          }}
+                        >
+                          {viewUnverified ? (
+                            <AiOutlineEye />
+                          ) : (
+                            <AiOutlineEyeInvisible />
+                          )}
+                          &nbsp;
+                          {
+                            importedAddresses.filter(
+                              (a) => a.verified === "unverified"
+                            ).length
+                          }
+                          &nbsp; Un-verified
+                        </CBadge>
+                      </CCardBody>
+                    </CCard>
+                  </>
+                )}
+                <CCard className="mt-3 mx-3 shadow mb-0">
                   <CCardBody>
                     <div className="address-forms container-fluid">
                       <AddressForm
@@ -238,13 +317,23 @@ function Configuration() {
                     </div>
                   </CCardBody>
                 </CCard>
-                <CCard className="mx-3 address-table-card shadow">
+                <CCard className="mx-3 address-table-card shadow my-3">
                   <CCardBody className="data-table">
                     <CDataTable
-                      items={importedAddresses.filter(
-                        (address) =>
-                          address.type !== "H" && address.type !== "E"
-                      )}
+                      items={importedAddresses.filter((address) => {
+                        if (address.type !== "H" && address.type !== "E") {
+                          if (!viewVerified && address.verified === "verified")
+                            return false;
+                          else if (
+                            !viewUnverified &&
+                            address.verified === "unverified"
+                          ) {
+                            return false;
+                          } else return true;
+                        } else {
+                          return false;
+                        }
+                      })}
                       fields={fields}
                       tableFilter
                       itemsPerPage={10}
@@ -270,7 +359,7 @@ function Configuration() {
                         },
                         address: (item) => {
                           return (
-                            <td className={item.verified ? "verified" : ""}>
+                            <td className={item.verified}>
                               {item.address || ""}
                             </td>
                           );
@@ -418,6 +507,38 @@ function Configuration() {
         wb={workspace}
         fileName={fileName}
       />
+      <CModal
+        show={confirmationModal}
+        onClose={() => setConfirmationModal(false)}
+        size="sm"
+        centered
+      >
+        <CModalHeader className="py-1" closeButton>
+          <CModalTitle>
+            <AiOutlineWarning />
+          </CModalTitle>
+        </CModalHeader>
+        <CModalBody>Clear all addresses?</CModalBody>
+        <CModalFooter className="py-1">
+          <CButton
+            color="primary"
+            onClick={() => {
+              setImportedAddresses([]);
+              setConfirmationModal(false);
+            }}
+            size="sm"
+          >
+            Yes
+          </CButton>{" "}
+          <CButton
+            color="secondary"
+            onClick={() => setConfirmationModal(false)}
+            size="sm"
+          >
+            No
+          </CButton>
+        </CModalFooter>
+      </CModal>
     </>
   );
 }
