@@ -32,11 +32,7 @@ import CIcon from "@coreui/icons-react";
 import _ from "lodash";
 import * as XLSX from "xlsx";
 import { FaPlus, FaAddressBook, FaRoute, FaColumns } from "react-icons/fa";
-import {
-  AiOutlineEye,
-  AiOutlineEyeInvisible,
-  AiOutlineWarning,
-} from "react-icons/ai";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import AddressForm from "../../forms/address-form";
 import ImportDocumentModal from "../import-document";
 import Goal from "../goal";
@@ -74,6 +70,7 @@ function Configuration() {
   const [viewVerified, setViewVerified] = useState(true);
   const [viewUnverified, setViewUnverified] = useState(true);
   const [confirmationModal, setConfirmationModal] = useState(false);
+  const [selectedItem, setSelectedItem] = useState({});
   const inputRef = useRef(null);
 
   const increment = () => {
@@ -190,7 +187,7 @@ function Configuration() {
               <CTabPane>
                 {!!importedAddresses.length && (
                   <>
-                    <CCard className="mt-3 mx-3 mb-0">
+                    <CCard className="mt-3 mx-3 shadow mb-0">
                       <CCardBody className="d-flex justify-content-end py-3">
                         <CButton
                           color="dark"
@@ -336,16 +333,17 @@ function Configuration() {
                       })}
                       fields={fields}
                       tableFilter
-                      itemsPerPage={10}
+                      itemsPerPage={50}
                       itemsPerPageSelect={{
                         label: "Addresses per page: ",
-                        values: [10, 20, 50],
+                        values: [50, 20, 10],
                       }}
                       hover
                       sorter
                       pagination
-                      onRowClick={() => {
+                      onRowClick={(item) => {
                         setStopOpen(!stopOpen);
+                        setSelectedItem(item);
                       }}
                       scopedSlots={{
                         no: (item) => {
@@ -381,6 +379,7 @@ function Configuration() {
                                 color="primary"
                                 onClick={() => {
                                   setStopOpen(true);
+                                  setSelectedItem(item);
                                 }}
                               >
                                 <CIcon name="cil-pencil" />
@@ -432,7 +431,8 @@ function Configuration() {
           <CModal
             show={stopOpen}
             onClose={() => setStopOpen(!stopOpen)}
-            size="lg"
+            size="md"
+            centered
           >
             <CModalHeader closeButton>
               <CModalTitle>Edit Stop</CModalTitle>
@@ -440,11 +440,15 @@ function Configuration() {
             <CModalBody>
               <CFormGroup>
                 <CLabel htmlFor="title">Title</CLabel>
-                <CInput id="title" placeholder="Enter your stop title" />
+                <CInput
+                  id="title"
+                  placeholder="Enter your stop title"
+                  value={selectedItem.title || ""}
+                />
               </CFormGroup>
               <CFormGroup>
                 <CLabel htmlFor="address">Address</CLabel>
-                <CInput id="address" />
+                <CInput id="address" value={selectedItem.address || ""} />
               </CFormGroup>
               <CFormGroup row className="my-0">
                 <CCol xs="6">
@@ -453,6 +457,7 @@ function Configuration() {
                     <CInput
                       id="order-size"
                       placeholder="Enter your order size"
+                      value={selectedItem.orderSize || ""}
                     />
                   </CFormGroup>
                 </CCol>
@@ -462,6 +467,7 @@ function Configuration() {
                     <CInput
                       id="service-time"
                       placeholder="Enter your service time"
+                      value={selectedItem.serviceTime || ""}
                     />
                   </CFormGroup>
                 </CCol>
@@ -513,27 +519,22 @@ function Configuration() {
         size="sm"
         centered
       >
-        <CModalHeader className="py-1" closeButton>
-          <CModalTitle>
-            <AiOutlineWarning />
-          </CModalTitle>
+        <CModalHeader closeButton>
+          <CModalTitle>Clear all addresses?</CModalTitle>
         </CModalHeader>
-        <CModalBody>Clear all addresses?</CModalBody>
-        <CModalFooter className="py-1">
+        <CModalFooter>
           <CButton
             color="primary"
             onClick={() => {
               setImportedAddresses([]);
               setConfirmationModal(false);
             }}
-            size="sm"
           >
             Yes
           </CButton>{" "}
           <CButton
             color="secondary"
             onClick={() => setConfirmationModal(false)}
-            size="sm"
           >
             No
           </CButton>
