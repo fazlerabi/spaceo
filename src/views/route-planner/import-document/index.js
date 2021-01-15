@@ -51,7 +51,7 @@ function ImportDocument(props) {
   const { open, setOpen, setAddress, wb, fileName } = props;
   const [ignoreRow, setIgnoreRow] = useState(true);
   const [appendToCurrentList, setAppendToCurrentList] = useState(false);
-  const [firstAsStartAddress, setFirstAsStartAddress] = useState(true);
+  const [firstAsStartAddress, setFirstAsStartAddress] = useState(false);
   const [lastAsEndAddress, setLastAsEndAddress] = useState(false);
   const [returnToStartAddress, setReturnToStartAddress] = useState(true);
   const [generatedRows, setGeneratedRows] = useState([]);
@@ -59,7 +59,7 @@ function ImportDocument(props) {
   const [selectedSheet, setSelectedSheet] = useState(null);
   const [selectedItems, setSelectedItems] = useState([]);
 
-  const headers = (rows && rows.length && Object.keys(rows[0])) || [];
+  const headers = (rows && rows.length && Object.keys(rows[1])) || [];
 
   const setDropdownType = (index, type) => {
     let selItems = Object.assign([], selectedItems);
@@ -92,34 +92,31 @@ function ImportDocument(props) {
 
   useDeepCompareEffect(() => {
     let newRows = [];
-    rows.map((row, i) => {
+    rows.forEach((row, i) => {
       const obj = {};
-      selectedItems.map((item, j) => {
+      selectedItems.forEach((item, j) => {
         if (item === 1)
-          obj["title"] = (obj["title"] || "") + rows[i][headers[j]] + " ";
+          obj["title"] = (obj["title"] || "") + row[headers[j]] + " ";
 
-        if (item === 2 && rows[i][headers[j]]) {
+        if (item === 2 && row[headers[j]]) {
           if (obj["address"]) {
-            obj["address"] = obj["address"] + ", " + rows[i][headers[j]];
+            obj["address"] = obj["address"] + ", " + row[headers[j]];
           } else {
-            obj["address"] = rows[i][headers[j]];
+            obj["address"] = row[headers[j]];
           }
         }
 
         if (item === 3)
           obj["service_time"] =
-            (obj["service_time"] || "") + rows[i][headers[j]] + " ";
+            (obj["service_time"] || "") + row[headers[j]] + " ";
 
         if (item === 4)
-          obj["order_size"] =
-            (obj["order_size"] || "") + rows[i][headers[j]] + " ";
+          obj["order_size"] = (obj["order_size"] || "") + row[headers[j]] + " ";
 
         if (item === 5)
-          obj["territory"] =
-            (obj["territory"] || "") + rows[i][headers[j]] + " ";
+          obj["territory"] = (obj["territory"] || "") + row[headers[j]] + " ";
       });
-
-      newRows.push(obj);
+      newRows.push({ ...obj, title: row["Order No"] });
     });
     setGeneratedRows(newRows);
   }, [rows, selectedItems]);

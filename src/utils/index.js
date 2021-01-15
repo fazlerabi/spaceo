@@ -26,7 +26,7 @@ export const fromAddress = async (address) => {
   }
 };
 
-export const validateAddress = async (address, index, func) => {
+export const validateAddress = async (address, index, func, row) => {
   const response = await axios.get(
     "https://maps.googleapis.com/maps/api/geocode/json",
     {
@@ -36,7 +36,7 @@ export const validateAddress = async (address, index, func) => {
       },
     }
   );
-
+  let obj = { title: index };
   func();
   if (response.data.results.length === 0) return { [index]: "unverified" };
   else if (
@@ -44,9 +44,20 @@ export const validateAddress = async (address, index, func) => {
     (response.data.results[0].types.includes("precise") &&
       response.data.results[0].partial_match !== true &&
       response.data.results[0].geometry.location_type === "ROOFTOP")
-  )
-    return { [index]: "verified" };
-  else return { [index]: "unverified" };
+  ) {
+    obj[index] = "verified";
+    return obj;
+  } else if (
+    response.data.results[0].types.includes("postal_code") ||
+    (response.data.results[0].partial_match === true &&
+      response.data.results[0].geometry.location_type === "APPROXIMATE")
+  ) {
+    obj[index] = "inaccurate";
+    return obj;
+  } else {
+    obj[index] = "unverified";
+    return obj;
+  }
 };
 
 export const validateMatchRegion = (headerName) => {

@@ -27,6 +27,10 @@
         background: $danger;
         color: $white;
       }
+      &.inaccurate {
+        background: $warning;
+        color: $white;
+      }
     }
   }
 

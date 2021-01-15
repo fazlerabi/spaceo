@@ -32,7 +32,12 @@ import CIcon from "@coreui/icons-react";
 import _ from "lodash";
 import * as XLSX from "xlsx";
 import { FaPlus, FaAddressBook, FaRoute, FaColumns } from "react-icons/fa";
-import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import {
+  AiOutlineEye,
+  AiOutlineEyeInvisible,
+  AiOutlineCheckCircle,
+  AiOutlineExclamationCircle,
+} from "react-icons/ai";
 import AddressForm from "../../forms/address-form";
 import ImportDocumentModal from "../import-document";
 import Goal from "../goal";
@@ -68,7 +73,9 @@ function Configuration() {
   const [importedAddresses, setImportedAddresses] = useState([]);
   const [fileName, setFileName] = useState(null);
   const [viewVerified, setViewVerified] = useState(true);
+  const [viewInaccurate, setViewInaccurate] = useState(true);
   const [viewUnverified, setViewUnverified] = useState(true);
+  const [verifiedRoutes, setVerifedRoutes] = useState(false);
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState({});
   const inputRef = useRef(null);
@@ -103,7 +110,10 @@ function Configuration() {
     setAddressLength(rows.length);
     setProgressBarOpen(true);
     const verifiedAddresses = await Promise.all(
-      rows.map((row) => validateAddress(row.address, row.type, increment))
+      rows.map((row) => {
+        if (row.address)
+          return validateAddress(row.address, row.type, increment, row);
+      })
     );
     setProgressBarOpen(false);
     setImportedAddresses(
@@ -134,6 +144,13 @@ function Configuration() {
       setEndAddressToggle(true);
     }
   }, [endAddress]);
+
+  const reverifyRoutes = () => {
+    setPercent(0);
+    setVerifedRoutes(!verifiedRoutes);
+    setAddress(importedAddresses);
+    setVerifedRoutes(!verifiedRoutes);
+  };
 
   return (
     <>
@@ -188,7 +205,7 @@ function Configuration() {
                 {!!importedAddresses.length && (
                   <>
                     <CCard className="mt-3 mx-3 shadow mb-0">
-                      <CCardBody className="d-flex justify-content-end py-3">
+                      <CCardBody className="d-flex justify-content-end py-3 ">
                         <CButton
                           color="dark"
                           variant="outline"
@@ -224,8 +241,8 @@ function Configuration() {
                       </CCardBody>
                     </CCard>
                     <CCard className="shadow imported-info mt-3 mx-3 mb-0">
-                      <CCardBody className="d-flex align-items-center">
-                        <p className="mb-0 mr-4">
+                      <CCardBody className="d-flex align-items-center overflow-auto">
+                        <p className="mb-0 mr-4 position-sticky bg-white" style={{left: '0'}} >
                           Total: {importedAddresses.length} Addresses
                         </p>
                         <CBadge
@@ -237,9 +254,9 @@ function Configuration() {
                           }}
                         >
                           {viewVerified ? (
-                            <AiOutlineEye />
+                            <AiOutlineEye size="18px" />
                           ) : (
-                            <AiOutlineEyeInvisible />
+                            <AiOutlineEyeInvisible size="18px" />
                           )}
                           &nbsp;
                           {
@@ -258,9 +275,9 @@ function Configuration() {
                           }}
                         >
                           {viewUnverified ? (
-                            <AiOutlineEye />
+                            <AiOutlineEye size="18px" />
                           ) : (
-                            <AiOutlineEyeInvisible />
+                            <AiOutlineEyeInvisible size="18px" />
                           )}
                           &nbsp;
                           {
@@ -269,6 +286,44 @@ function Configuration() {
                             ).length
                           }
                           &nbsp; Un-verified
+                        </CBadge>
+                        <CBadge
+                          color="warning"
+                          size="xl"
+                          className="mr-3 h6 mb-0"
+                          onClick={() => {
+                            setViewInaccurate(!viewInaccurate);
+                          }}
+                        >
+                          {viewInaccurate ? (
+                            <AiOutlineEye size="18px" />
+                          ) : (
+                            <AiOutlineEyeInvisible size="18px" />
+                          )}
+                          &nbsp;
+                          {
+                            importedAddresses.filter(
+                              (a) => a.verified === "inaccurate"
+                            ).length
+                          }
+                          &nbsp; Inaccurate
+                        </CBadge>
+                        <CBadge
+                          size="xl"
+                          className="mr-2 h6 mb-0"
+                          onClick={() => {
+                            reverifyRoutes();
+                          }}
+                        >
+                          {verifiedRoutes ? (
+                            <AiOutlineCheckCircle size="20px" />
+                          ) : (
+                            <AiOutlineExclamationCircle size="20px" />
+                          )}
+                          &nbsp; {
+                            !verifiedRoutes ? 
+                            "Re-verify": "Verifed"
+                          } 
                         </CBadge>
                       </CCardBody>
                     </CCard>
@@ -326,9 +381,14 @@ function Configuration() {
                             address.verified === "unverified"
                           ) {
                             return false;
+                          } else if (
+                            !viewInaccurate &&
+                            address.verified === "inaccurate"
+                          ) {
+                            return false;
                           } else return true;
                         } else {
-                          return false;
+                          return true;
                         }
                       })}
                       fields={fields}
