@@ -112,11 +112,12 @@ function Configuration() {
     const verifiedAddresses = await Promise.all(
       rows.map((row) => {
         if (row.address)
-          return validateAddress(row.address, row.type, increment, row);
+          return validateAddress(row.address, row.type, increment);
+        else return { title: row.type, [row.type]: "inaccurate" };
       })
     );
     setProgressBarOpen(false);
-    setImportedAddresses(
+    setImportedAddresses(           
       verifiedAddresses.map((row) => {
         const key = Object.keys(row)[0];
         const value = row[key];
@@ -242,7 +243,10 @@ function Configuration() {
                     </CCard>
                     <CCard className="shadow imported-info mt-3 mx-3 mb-0">
                       <CCardBody className="d-flex align-items-center overflow-auto">
-                        <p className="mb-0 mr-4 position-sticky bg-white" style={{left: '0'}} >
+                        <p
+                          className="mb-0 mr-4 position-sticky bg-white"
+                          style={{ left: "0" }}
+                        >
                           Total: {importedAddresses.length} Addresses
                         </p>
                         <CBadge
@@ -320,10 +324,7 @@ function Configuration() {
                           ) : (
                             <AiOutlineExclamationCircle size="20px" />
                           )}
-                          &nbsp; {
-                            !verifiedRoutes ? 
-                            "Re-verify": "Verifed"
-                          } 
+                          &nbsp; {!verifiedRoutes ? "Re-verify" : "Verifed"}
                         </CBadge>
                       </CCardBody>
                     </CCard>
